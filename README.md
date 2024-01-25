@@ -58,7 +58,7 @@ The VegSpec class stores the computational results in the following attribute va
 * lirfd1 : numpy.ndarray, A 1D array of the Savitsky-Golay first derivative of lirf
 * lirfd2 : numpy.ndarry, A 1D array of the Savitsky-Golay second derivative of lirf
 * crrf : numpy.ndarray, A 1D array of the continuum removal of rf
-indices : dict, A dictionary of 145+ published spectral vegetation indices
+* indices : dict, A dictionary of 145+ published spectral vegetation indices
 
 For further information on the keys of the `indices` attribute, see the documentation [here](http://github.com/kthorp/vegspec/tree/main/docs/document.pdf).
 
