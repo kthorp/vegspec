@@ -3,10 +3,11 @@
 The vegspec.py module contains the VegSpec class, which defines
 functions for analysis of one vegetative reflectance spectrum, including
 calculations of spectral derivatives, log inverse reflectance, continuum
-removal, and more than 130 published spectral vegetation indices.
+removal, and more than 145 published spectral vegetation indices.
 
 04/06/2022 Initial Python functions developed by Kelly Thorp
 12/02/2022 Finalized code for release in the vegspec Python package
+01/23/2023 Added more spectral vegetation indices
 ########################################################################
 """
 
@@ -21,7 +22,7 @@ class VegSpec:
     """A class for analyzing vegetative spectral reflectance data.
 
     Manages computations of spectral derivatives, log inverse
-    reflectance, continuum removal, and more than 130 published spectral
+    reflectance, continuum removal, and more than 145 published spectral
     vegetation indices.
 
     Attributes
@@ -30,6 +31,8 @@ class VegSpec:
         A 1D array of wavelengths (nm) corresponding to the data in rf
     rf : numpy.ndarray
         A 1D array of reflectance factors for a single spectral scan
+    bndwdth : numpy.ndarray
+        A 1D array of bandwidths (nm) corresponding to the data in rf
     NaN : float
         Simplified representation of float('NaN')
     wlblu : float
@@ -40,6 +43,10 @@ class VegSpec:
         Primary wavelength of visible red light (nm) (default = 670.)
     wlnir : float
         Primary wavelength of near-infrared light (nm) (default = 800.)
+    solslp : float
+        Slope of the soil line (default = 1.166, Huete et al. (1984))
+    solicpt : float
+        Intercept of soil line (default = 0.042, Huete et al. (1984))
     rfd1 : numpy.ndarray
         A 1D array of the Savitsky-Golay first derivative of rf
     rfd2 : numpy.ndarray
@@ -53,11 +60,13 @@ class VegSpec:
     crrf : numpy.ndarray
         A 1D array of the continuum removal of rf
     indices : dict
-        A dictionary of 135 published spectral vegetation indices
+        A dictionary of 145+ published spectral vegetation indices
     """
 
     def __init__(self,wl,rf,fs1=7,po1=2,fs2=15,po2=2,
-                 wlblu=480.,wlgrn=550.,wlred=670.,wlnir=800.):
+                 wlblu=480.,wlgrn=550.,wlred=670.,wlnir=800.,
+                 solslp=1.166,solicpt=0.042,
+                 getlirf=True,getcrrf=True):
         """Initialize and compute the VegSpec class attributes.
 
         Parameters
@@ -65,7 +74,7 @@ class VegSpec:
         wl : list
             Wavelengths (nm) corresponding to the data in rf
         rf : list
-            Reflectance factors for a single spectral scan
+            Reflectance factors (0 to 1) for a single spectral scan
         fs1 : int, optional
             Filter size for Savitsky-Golay first derivatives
             (default = 7)
@@ -90,15 +99,38 @@ class VegSpec:
         wlnir : float, optional
             Primary wavelength of near-infrared light (nm)
             (default = 800.)
+        solslp : float, optional
+            Slope of the soil line
+            (default = 1.166, Huete et al. (1984))
+        solicpt : float, optional
+            Intercept of the soilline
+            (default = 0.042, Huete et al. (1984))
+        getlirf : boolean, optional
+            If True, compute log inverse reflectance
+            (default = True)
+        getcrrf : boolean, optional
+            If True, compute continuum removed spectra
+            (default = True)
         """
 
+        self.wl = np.array(wl).astype(float)
+        self.rf = np.array(rf).astype(float)
+        bndwdth = []
+        for i in range(len(wl)):
+            if i in [0]:
+                bndwdth.append(wl[1]-wl[0])
+            elif i in [len(wl)-1]:
+                bndwdth.append(wl[-1]-wl[-2])
+            else:
+                bndwdth.append((wl[i]-wl[i-1])/2.+(wl[i+1]-wl[i])/2.)
+        self.bndwdth = np.array(bndwdth)
         self.NaN = float('NaN')
         self.wlblu = wlblu
         self.wlgrn = wlgrn
         self.wlred = wlred
         self.wlnir = wlnir
-        self.wl = np.array(wl).astype(float)
-        self.rf = np.array(rf).astype(float)
+        self.solslp = solslp
+        self.solicpt = solicpt
         self.rfd1 = self._derivative1(fs1,po1)
         self.rfd2 = self._derivative2(fs2,po2)
         self.lirf = self._loginvrf()
@@ -106,141 +138,154 @@ class VegSpec:
         self.lirfd2 = self._loginvrfd2(fs2,po2)
         self.crrf = self._contremov()
         self.indices = {}
-        self.indices.update({'BRSR':self._BRSR()})
-        self.indices.update({'JSR':self._JSR()})
-        self.indices.update({'NDVI':self._NDVI()})
-        self.indices.update({'WLREIP':self._WLREIP()})
-        self.indices.update({'DVI':self._DVI()})
-        self.indices.update({'NDVI2':self._NDVI2()})
+        self.indices.update({'BRSR':   self._BRSR()   })
+        self.indices.update({'JSR':    self._JSR()    })
+        self.indices.update({'NDVI':   self._NDVI()   })
+        self.indices.update({'PVI':    self._PVI()    })
+        self.indices.update({'WLREIP': self._WLREIP() })
+        self.indices.update({'DVI':    self._DVI()    })
+        self.indices.update({'NDVI2':  self._NDVI2()  })
         self.indices.update({'WLREIP2':self._WLREIP2()})
-        self.indices.update({'SAVI':self._SAVI()})
-        self.indices.update({'TSAVI':self._TSAVI()})
-        self.indices.update({'MSI':self._MSI()})
-        self.indices.update({'BD':self._BD()})
-        self.indices.update({'BDR':self._BDR()})
+        self.indices.update({'SAVI':   self._SAVI()   })
+        self.indices.update({'TSAVI':  self._TSAVI()  })
+        self.indices.update({'WDVI':   self._WDVI()   })
+        self.indices.update({'MSI':    self._MSI()    })
+        self.indices.update({'BD':     self._BD()     })
+        self.indices.update({'BDR':    self._BDR()    })
+        self.indices.update({'SAVI2':  self._SAVI2()  })
         self.indices.update({'WLREIPG':self._WLREIPG()})
         self.indices.update({'WLCWMRG':self._WLCWMRG()})
-        self.indices.update({'CPSR1':self._CPSR1()})
-        self.indices.update({'CPSR2':self._CPSR2()})
-        self.indices.update({'CPSR3':self._CPSR3()})
-        self.indices.update({'PRI':self._PRI()})
-        self.indices.update({'BMSR':self._BMSR()})
-        self.indices.update({'BMLSR':self._BMLSR()})
-        self.indices.update({'BMDVI':self._BMDVI()})
-        self.indices.update({'PSR':self._PSR()})
-        self.indices.update({'PD':self._PD()})
-        self.indices.update({'WLPD':self._WLPD()})
-        self.indices.update({'VSR':self._VSR()})
-        self.indices.update({'VDR':self._VDR()})
-        self.indices.update({'CRSR1':self._CRSR1()})
-        self.indices.update({'CRSR2':self._CRSR2()})
-        self.indices.update({'CRSR3':self._CRSR3()})
-        self.indices.update({'CRSR4':self._CRSR4()})
-        self.indices.update({'CRSR5':self._CRSR5()})
-        self.indices.update({'FSUM':self._FSUM()})
-        self.indices.update({'DREIP':self._DREIP()})
-        self.indices.update({'NDVI3':self._NDVI3()})
-        self.indices.update({'GSUM1':self._GSUM1()})
-        self.indices.update({'GSUM2':self._GSUM2()})
-        self.indices.update({'NLI':self._NLI()})
-        self.indices.update({'CAR':self._CAR()})
-        self.indices.update({'CARI':self._CARI()})
-        self.indices.update({'NPCI':self._NPCI()})
-        self.indices.update({'EGFN':self._EGFN()})
-        self.indices.update({'MSAVI':self._MSAVI()})
-        self.indices.update({'MSR':self._MSR()})
-        self.indices.update({'ESUM':self._ESUM()})
-        self.indices.update({'NDPI':self._NDPI()})
-        self.indices.update({'SIPI':self._SIPI()})
-        self.indices.update({'SRPI':self._SRPI()})
-        self.indices.update({'NPQI':self._NPQI()})
-        self.indices.update({'RDVI':self._RDVI()})
-        self.indices.update({'PRI2':self._PRI2()})
-        self.indices.update({'NDWI':self._NDWI()})
-        self.indices.update({'GTSR1':self._GTSR1()})
-        self.indices.update({'GTSR2':self._GTSR2()})
-        self.indices.update({'GNDVI':self._GNDVI()})
-        self.indices.update({'GARI':self._GARI()})
-        self.indices.update({'OSAVI':self._OSAVI()})
-        self.indices.update({'PSSRA':self._PSSRA()})
-        self.indices.update({'PSSRB':self._PSSRB()})
-        self.indices.update({'PSSRC':self._PSSRC()})
-        self.indices.update({'PSNDA':self._PSNDA()})
-        self.indices.update({'PSNDB':self._PSNDB()})
-        self.indices.update({'PSNDC':self._PSNDC()})
-        self.indices.update({'DSR1':self._DSR1()})
-        self.indices.update({'DSR2':self._DSR2()})
-        self.indices.update({'DNDR':self._DNDR()})
-        self.indices.update({'DDR':self._DDR()})
-        self.indices.update({'GMSR':self._GMSR()})
-        self.indices.update({'PSRI':self._PSRI()})
-        self.indices.update({'TVI':self._TVI()})
-        self.indices.update({'MCARI':self._MCARI()})
-        self.indices.update({'MOR':self._MOR()})
-        self.indices.update({'ZTSR1':self._ZTSR1()})
-        self.indices.update({'CI':self._CI()})
-        self.indices.update({'ZTDR1':self._ZTDR1()})
-        self.indices.update({'ZTSR2':self._ZTSR2()})
-        self.indices.update({'CAI':self._CAI()})
-        self.indices.update({'ARI':self._ARI()})
-        self.indices.update({'MND1':self._MND1()})
-        self.indices.update({'MND2':self._MND2()})
-        self.indices.update({'MND3':self._MND3()})
-        self.indices.update({'MND4':self._MND4()})
-        self.indices.update({'CAINT':self._CAINT()})
-        self.indices.update({'ZTSUM':self._ZTSUM()})
-        self.indices.update({'ZTDPR1':self._ZTDPR1()})
-        self.indices.update({'ZTDPR2':self._ZTDPR2()})
-        self.indices.update({'ZTDP21':self._ZTDP21()})
-        self.indices.update({'ZTDP22':self._ZTDP22()})
-        self.indices.update({'GI':self._GI()})
-        self.indices.update({'ZTSR3':self._ZTSR3()})
-        self.indices.update({'ZTSR4':self._ZTSR4()})
-        self.indices.update({'ZTSR5':self._ZTSR5()})
-        self.indices.update({'ZTSR6':self._ZTSR6()})
-        self.indices.update({'VARI':self._VARI()})
-        self.indices.update({'CRI500':self._CRI500()})
-        self.indices.update({'CRI700':self._CRI700()})
-        self.indices.update({'TCARI':self._TCARI()})
-        self.indices.update({'TOR':self._TOR()})
-        self.indices.update({'EVI':self._EVI()})
-        self.indices.update({'NDNI':self._NDNI()})
-        self.indices.update({'NDLI':self._NDLI()})
-        self.indices.update({'MSR2':self._MSR2()})
-        self.indices.update({'SMNDVI':self._SMNDVI()})
-        self.indices.update({'GRRGM':self._GRRGM()})
-        self.indices.update({'GRRREM':self._GRRREM()})
-        self.indices.update({'DPI':self._DPI()})
-        self.indices.update({'MTCI':self._MTCI()})
-        self.indices.update({'MCARI1':self._MCARI1()})
-        self.indices.update({'MCARI2':self._MCARI2()})
-        self.indices.update({'MTVI1':self._MTVI1()})
-        self.indices.update({'MTVI2':self._MTVI2()})
-        self.indices.update({'DD':self._DD()})
-        self.indices.update({'LCA':self._LCA()})
-        self.indices.update({'RGI':self._RGI()})
-        self.indices.update({'BGI1':self._BGI1()})
-        self.indices.update({'BGI2':self._BGI2()})
-        self.indices.update({'BRI1':self._BRI1()})
-        self.indices.update({'BRI2':self._BRI2()})
+        self.indices.update({'TSAVI2': self._TSAVI2() })
+        self.indices.update({'CPSR1':  self._CPSR1()  })
+        self.indices.update({'CPSR2':  self._CPSR2()  })
+        self.indices.update({'CPSR3':  self._CPSR3()  })
+        self.indices.update({'PRI':    self._PRI()    })
+        self.indices.update({'GEMI':   self._GEMI()   })
+        self.indices.update({'BMSR':   self._BMSR()   })
+        self.indices.update({'BMLSR':  self._BMLSR()  })
+        self.indices.update({'BMDVI':  self._BMDVI()  })
+        self.indices.update({'PSR':    self._PSR()    })
+        self.indices.update({'PD':     self._PD()     })
+        self.indices.update({'WLPD':   self._WLPD()   })
+        self.indices.update({'VSR':    self._VSR()    })
+        self.indices.update({'VDR':    self._VDR()    })
+        self.indices.update({'CRSR1':  self._CRSR1()  })
+        self.indices.update({'CRSR2':  self._CRSR2()  })
+        self.indices.update({'CRSR3':  self._CRSR3()  })
+        self.indices.update({'CRSR4':  self._CRSR4()  })
+        self.indices.update({'CRSR5':  self._CRSR5()  })
+        self.indices.update({'FSUM':   self._FSUM()   })
+        self.indices.update({'DREIP':  self._DREIP()  })
+        self.indices.update({'NDVI3':  self._NDVI3()  })
+        self.indices.update({'GSUM1':  self._GSUM1()  })
+        self.indices.update({'GSUM2':  self._GSUM2()  })
+        self.indices.update({'NLI':    self._NLI()    })
+        self.indices.update({'CAR':    self._CAR()    })
+        self.indices.update({'CARI':   self._CARI()   })
+        self.indices.update({'NPCI':   self._NPCI()   })
+        self.indices.update({'EGFN':   self._EGFN()   })
+        self.indices.update({'MSAVI1': self._MSAVI1() })
+        self.indices.update({'MSAVI2': self._MSAVI2() })
+        self.indices.update({'ESUM1':  self._ESUM1()  })
+        self.indices.update({'ESUM2':  self._ESUM2()  })
+        self.indices.update({'NDPI':   self._NDPI()   })
+        self.indices.update({'SIPI':   self._SIPI()   })
+        self.indices.update({'SRPI':   self._SRPI()   })
+        self.indices.update({'NPQI':   self._NPQI()   })
+        self.indices.update({'RDVI':   self._RDVI()   })
+        self.indices.update({'MSR':    self._MSR()    })
+        self.indices.update({'PRI2':   self._PRI2()   })
+        self.indices.update({'NDWI':   self._NDWI()   })
+        self.indices.update({'GTSR1':  self._GTSR1()  })
+        self.indices.update({'GTSR2':  self._GTSR2()  })
+        self.indices.update({'GNDVI':  self._GNDVI()  })
+        self.indices.update({'OSAVI':  self._OSAVI()  })
+        self.indices.update({'WI':     self._WI()     })
+        self.indices.update({'PSSRA':  self._PSSRA()  })
+        self.indices.update({'PSSRB':  self._PSSRB()  })
+        self.indices.update({'PSSRC':  self._PSSRC()  })
+        self.indices.update({'PSNDA':  self._PSNDA()  })
+        self.indices.update({'PSNDB':  self._PSNDB()  })
+        self.indices.update({'PSNDC':  self._PSNDC()  })
+        self.indices.update({'DSR1':   self._DSR1()   })
+        self.indices.update({'DSR2':   self._DSR2()   })
+        self.indices.update({'DNDR':   self._DNDR()   })
+        self.indices.update({'DDR1':   self._DDR1()   })
+        self.indices.update({'DDR2':   self._DDR2()   })
+        self.indices.update({'GMSR':   self._GMSR()   })
+        self.indices.update({'PSRI':   self._PSRI()   })
+        self.indices.update({'TVI':    self._TVI()    })
+        self.indices.update({'MCARI':  self._MCARI()  })
+        self.indices.update({'MOR':    self._MOR()    })
+        self.indices.update({'ZTSR1':  self._ZTSR1()  })
+        self.indices.update({'CI':     self._CI()     })
+        self.indices.update({'ZTDR1':  self._ZTDR1()  })
+        self.indices.update({'ZTSR2':  self._ZTSR2()  })
+        self.indices.update({'CAI':    self._CAI()    })
+        self.indices.update({'ARI':    self._ARI()    })
+        self.indices.update({'MND1':   self._MND1()   })
+        self.indices.update({'MND2':   self._MND2()   })
+        self.indices.update({'MND3':   self._MND3()   })
+        self.indices.update({'MND4':   self._MND4()   })
+        self.indices.update({'CAINT':  self._CAINT()  })
+        self.indices.update({'ZTSUM':  self._ZTSUM()  })
+        self.indices.update({'PRI3':   self._PRI3()   })
+        self.indices.update({'ZTDPR1': self._ZTDPR1() })
+        self.indices.update({'ZTDPR2': self._ZTDPR2() })
+        self.indices.update({'ZTDP21': self._ZTDP21() })
+        self.indices.update({'ZTDP22': self._ZTDP22() })
+        self.indices.update({'GI':     self._GI()     })
+        self.indices.update({'ZTSR3':  self._ZTSR3()  })
+        self.indices.update({'ZTSR4':  self._ZTSR4()  })
+        self.indices.update({'ZTSR5':  self._ZTSR5()  })
+        self.indices.update({'ZTSR6':  self._ZTSR6()  })
+        self.indices.update({'VARI':   self._VARI()   })
+        self.indices.update({'CRI500': self._CRI500() })
+        self.indices.update({'CRI700': self._CRI700() })
+        self.indices.update({'TCARI':  self._TCARI()  })
+        self.indices.update({'TOR':    self._TOR()    })
+        self.indices.update({'EVI':    self._EVI()    })
+        self.indices.update({'NDNI':   self._NDNI()   })
+        self.indices.update({'NDLI':   self._NDLI()   })
+        self.indices.update({'MSR2':   self._MSR2()   })
+        self.indices.update({'SMNDVI': self._SMNDVI() })
+        self.indices.update({'GRRGM':  self._GRRGM()  })
+        self.indices.update({'GRRREM': self._GRRREM() })
+        self.indices.update({'DPI':    self._DPI()    })
+        self.indices.update({'SRWI':   self._SRWI()   })
+        self.indices.update({'MTCI':   self._MTCI()   })
+        self.indices.update({'WDRVI':  self._WDRVI()  })
+        self.indices.update({'MCARI1': self._MCARI1() })
+        self.indices.update({'MCARI2': self._MCARI2() })
+        self.indices.update({'MTVI1':  self._MTVI1()  })
+        self.indices.update({'MTVI2':  self._MTVI2()  })
+        self.indices.update({'DD':     self._DD()     })
+        self.indices.update({'LCA':    self._LCA()    })
+        self.indices.update({'RGI':    self._RGI()    })
+        self.indices.update({'BGI1':   self._BGI1()   })
+        self.indices.update({'BGI2':   self._BGI2()   })
+        self.indices.update({'BRI1':   self._BRI1()   })
+        self.indices.update({'BRI2':   self._BRI2()   })
         self.indices.update({'WLREIPE':self._WLREIPE()})
-        self.indices.update({'RVIOPT':self._RVIOPT()})
-        self.indices.update({'SPVI':self._SPVI()})
-        self.indices.update({'MMR':self._MMR()})
-        self.indices.update({'TCI':self._TCI()})
-        self.indices.update({'EVI2':self._EVI2()})
-        self.indices.update({'DDN':self._DDN()})
-        self.indices.update({'CVI':self._CVI()})
+        self.indices.update({'RVIOPT': self._RVIOPT() })
+        self.indices.update({'SPVI':   self._SPVI()   })
+        self.indices.update({'MMR':    self._MMR()    })
+        self.indices.update({'TCI':    self._TCI()    })
+        self.indices.update({'EVI2':   self._EVI2()   })
+        self.indices.update({'DDN':    self._DDN()    })
+        self.indices.update({'CVI':    self._CVI()    })
+        self.indices.update({'WUTCARI':self._WUTCARI()})
         self.indices.update({'WUOSAVI':self._WUOSAVI()})
         self.indices.update({'WUMCARI':self._WUMCARI()})
-        self.indices.update({'WUMSR':self._WUMSR()})
-        self.indices.update({'WUTOR':self._WUTOR()})
-        self.indices.update({'WUMOR':self._WUMOR()})
-        self.indices.update({'DCNI':self._DCNI()})
-        self.indices.update({'TGI':self._TGI()})
-        self.indices.update({'WDRVI':self._WDRVI()})
-        self.indices.update({'AIVI':self._AIVI()})
-        self.indices.update({'DND':self._DND()})
+        self.indices.update({'WUMSR':  self._WUMSR()  })
+        self.indices.update({'WUTOR':  self._WUTOR()  })
+        self.indices.update({'WUMOR':  self._WUMOR()  })
+        self.indices.update({'DCNI':   self._DCNI()   })
+        self.indices.update({'TGI':    self._TGI()    })
+        self.indices.update({'WDRVI2': self._WDRVI2() })
+        self.indices.update({'AIVI':   self._AIVI()   })
+        self.indices.update({'DND':    self._DND()    })
+        self.indices.update({'GRSUM':  self._GRSUM()  })
 
     #Spectral transformations
     def _derivative1(self,fs1,po1):
@@ -296,7 +341,7 @@ class VegSpec:
         return R745/R675
 
     def _JSR(self):
-        """Compute Jordan simple ratio (JSR)(Jordan, 1969)"""
+        """Compute Jordan simple ratio (JSR) (Jordan, 1969)"""
         R675 = np.interp(675.,self.wl,self.rf,self.NaN,self.NaN)
         R800 = np.interp(800.,self.wl,self.rf,self.NaN,self.NaN)
         return R800/R675
@@ -307,6 +352,17 @@ class VegSpec:
         Rred = np.interp(self.wlred,self.wl,self.rf,self.NaN,self.NaN)
         Rnir = np.interp(self.wlnir,self.wl,self.rf,self.NaN,self.NaN)
         return (Rnir-Rred)/(Rnir+Rred)
+
+    def _PVI(self):
+        """Compute the Perpendicular Vegetation Index (PVI)
+        Original PVI publication (Richardson and Wiegand, 1977)
+        Algebraic basis for PVI (Jackson et al., 1980)
+        Soil line parameters (Heute et al., 1984)"""
+        Rred = np.interp(self.wlred,self.wl,self.rf,self.NaN,self.NaN)
+        Rnir = np.interp(self.wlnir,self.wl,self.rf,self.NaN,self.NaN)
+        a = self.solslp
+        b = self.solicpt
+        return (Rnir-a*Rred-b)/math.sqrt(1.+a*a)
 
     def _WLREIP(self):
         """Identify the wavelength (nm) of the red edge inflection point
@@ -335,24 +391,34 @@ class VegSpec:
         R700 = np.interp(700.,self.wl,self.rf,self.NaN,self.NaN)
         R740 = np.interp(740.,self.wl,self.rf,self.NaN,self.NaN)
         R780 = np.interp(780.,self.wl,self.rf,self.NaN,self.NaN)
-        return 700. + 40.*((R670+R780)/2.0-R700)/(R740-R700)
+        return 700. + 40.*(((R670+R780)/2.-R700)/(R740-R700))
 
-    def _SAVI(self):
+    def _SAVI(self, L=0.50):
         """Compute the Soil-Adjusted Vegetation Index (SAVI)
         (Huete, 1988)"""
         Rred = np.interp(self.wlred,self.wl,self.rf,self.NaN,self.NaN)
         Rnir = np.interp(self.wlnir,self.wl,self.rf,self.NaN,self.NaN)
-        return (1+0.50)*(Rnir-Rred)/(Rnir+Rred+0.50)
+        return (1+L)*(Rnir-Rred)/(Rnir+Rred+L)
 
-    def _TSAVI(self,a=1.166,b=0.042):
+    def _TSAVI(self):
         """Compute the Transformed Soil Adjusted Vegetation Index 
         (TSAVI)
         Original TSAVI publication (Baret et al., 1989)
-        Updated TSAVI publication (Baret & Guyot, 1991)
         Soil line parameters (Heute et al., 1984)"""
         Rred = np.interp(self.wlred,self.wl,self.rf,self.NaN,self.NaN)
         Rnir = np.interp(self.wlnir,self.wl,self.rf,self.NaN,self.NaN)
-        return a*(Rnir-a*Rred-b)/(a*Rnir+Rred-a*b+0.08*(1+a*a))
+        a = self.solslp
+        b = self.solicpt
+        return a*(Rnir-a*Rred-b)/(Rred+a*Rnir-a*b)
+
+    def _WDVI(self):
+        """Compute the Weighted Difference Vegetation Index (WDVI)
+        WDVI formulation (Clevers, 1989)
+        Soil line slope parameter (Heute et al., 1984)"""
+        Rred = np.interp(self.wlred,self.wl,self.rf,self.NaN,self.NaN)
+        Rnir = np.interp(self.wlnir,self.wl,self.rf,self.NaN,self.NaN)
+        C = self.solslp
+        return Rnir-C*Rred
 
     def _MSI(self):
         """Compute the Moisture Stress Index (MSI)
@@ -372,6 +438,16 @@ class VegSpec:
         widx = np.where(np.logical_and(self.wl>=680.,self.wl<=750.))
         Dmax = np.amax(self.rfd1[widx])
         return D703/Dmax
+
+    def _SAVI2(self):
+        """Compute the Soil-Adjusted Vegetation Index 2 (SAVI2)
+        Original SAVI2 publication (Major et al., 1990)
+        Soil line parameters (Huete et al., 1984)"""
+        Rred = np.interp(self.wlred,self.wl,self.rf,self.NaN,self.NaN)
+        Rnir = np.interp(self.wlnir,self.wl,self.rf,self.NaN,self.NaN)
+        a = self.solslp
+        b = self.solicpt
+        return Rnir/(Rred+b/a)
 
     def _WLREIPG(self):
         """Compute the wavelength (nm) of the red edge inflection point
@@ -435,6 +511,17 @@ class VegSpec:
         #plt.show()
         return popt[0]
 
+    def _TSAVI2(self, X=0.08):
+        """Compute the Transformed Soil Adjusted Vegetation Index 2
+        (TSAVI2)
+        Updated TSAVI publication (Baret & Guyot, 1991)
+        Soil line parameters (Heute et al., 1984)"""
+        Rred = np.interp(self.wlred,self.wl,self.rf,self.NaN,self.NaN)
+        Rnir = np.interp(self.wlnir,self.wl,self.rf,self.NaN,self.NaN)
+        a = self.solslp
+        b = self.solicpt
+        return a*(Rnir-a*Rred-b)/(a*Rnir+Rred-a*b+X*(1.+a*a))
+
     def _CPSR1(self):
         """Compute the Chappelle simple ratio 1 (CPSR1)
         (Chappelle et al., 1992)"""
@@ -464,6 +551,15 @@ class VegSpec:
         R550 = np.interp(550.,self.wl,self.rf,self.NaN,self.NaN)
         return (R550-R531)/(R550+R531)
 
+    def _GEMI(self):
+        """Compute the Global Environment Monitoring Index (GEMI)
+        (Pinty & Verstraete, 1992)"""
+        Rred = np.interp(self.wlred,self.wl,self.rf,self.NaN,self.NaN)
+        Rnir = np.interp(self.wlnir,self.wl,self.rf,self.NaN,self.NaN)
+        eta = 2.*(Rnir*Rnir-Rred*Rred)+1.5*Rnir+0.5*Rred
+        eta = eta / (Rnir+Rred+0.5)
+        return eta*(1.-0.25*eta)-(Rred-0.125)/(1.-Rred)
+
     def _BMSR(self):
         """Compute the Buschmann simple ratio (BMSR)
         (Buschmann & Nagel, 1993)"""
@@ -488,9 +584,9 @@ class VegSpec:
     def _PSR(self):
         """Compute the Penuelas simple ratio (PSR)
         (Penuelas et al., 1993)"""
-        R900 = np.interp(900.,self.wl,self.rf,self.NaN,self.NaN)
         R970 = np.interp(970.,self.wl,self.rf,self.NaN,self.NaN)
-        return R900/R970
+        R900 = np.interp(900.,self.wl,self.rf,self.NaN,self.NaN)
+        return R970/R900
 
     def _PD(self):
         """Compute the Penuelas derivative (PD)
@@ -549,10 +645,11 @@ class VegSpec:
         return R695/R670
 
     def _FSUM(self):
-        """Compute the sum of first derivative values from 680 nm to 780
-        nm (FSUM) (Filella & Penuelas, 1994; Fillela et al., 1995)"""
+        """Compute the area of the first derivative red edge peak from
+        680 nm to 780 nm (FSUM) (Filella & Penuelas, 1994;
+        Fillela et al., 1995)"""
         widx = np.where(np.logical_and(self.wl>=680.,self.wl<=780.))
-        return np.sum(self.rfd1[widx])
+        return np.sum(self.rfd1[widx]*self.bndwdth[widx])
 
     def _DREIP(self):
         """Identify the amplitude of the first derivative at the red
@@ -574,7 +671,7 @@ class VegSpec:
         (Gitelson & Merzlyak, 1994)"""
         R705 = np.interp(705.,self.wl,self.rf,self.NaN,self.NaN)
         widx = np.where(np.logical_and(self.wl>=705.,self.wl<=750.))
-        return np.sum(self.rf[widx]/R705-1.0)
+        return np.sum((self.rf[widx]/R705-1.)*self.bndwdth[widx])
 
     def _GSUM2(self):
         """Compute the sum of reflectance from 705 nm to 750 nm,
@@ -582,10 +679,10 @@ class VegSpec:
         (Gitelson & Merzlyak, 1994)"""
         R555 = np.interp(555.,self.wl,self.rf,self.NaN,self.NaN)
         widx = np.where(np.logical_and(self.wl>=705.,self.wl<=750.))
-        return np.sum(self.rf[widx]/R555-1.0)
+        return np.sum((self.rf[widx]/R555-1.)*self.bndwdth[widx])
 
     def _NLI(self):
-        """Compute the Nonlinear Index (NLI) (Goel et al., 1994)"""
+        """Compute the Nonlinear Index (NLI) (Goel & Qin, 1994)"""
         Rred = np.interp(self.wlred,self.wl,self.rf,self.NaN,self.NaN)
         Rnir = np.interp(self.wlnir,self.wl,self.rf,self.NaN,self.NaN)
         return (Rnir*Rnir-Rred)/(Rnir*Rnir+Rred)
@@ -606,15 +703,10 @@ class VegSpec:
     def _CARI(self):
         """Compute the Chlorophyll Absorption Ratio Index (CARI)
         (Kim et al., 1994)"""
-        R550 = np.interp(550.,self.wl,self.rf,self.NaN,self.NaN)*100.
         R670 = np.interp(670.,self.wl,self.rf,self.NaN,self.NaN)*100.
         R700 = np.interp(700.,self.wl,self.rf,self.NaN,self.NaN)*100.
-        a = np.array([[700.-550.],[R700-R550]])
-        b = np.array([[670.-550.],[R670-R550]])
-        dot1 = np.dot(a.transpose(),a)[0][0]
-        dot2 = np.dot(b.transpose(),b)[0][0]
-        dot3 = np.dot(a.transpose(),b)[0][0]
-        return math.sqrt((dot2*dot1-dot3*dot3)/dot1)*(R700/R670)
+        CAR = self._CAR()
+        return CAR*(R700/R670)
 
     def _NPCI(self):
         """Compute the Normalized Pigments Chlorophyll Ratio Index
@@ -632,25 +724,37 @@ class VegSpec:
         dRE = np.amax(self.rfd1[widx])
         return (dRE-dG)/(dRE+dG)
 
-    def _MSAVI(self):
-        """Compute the Modified Soil Adjusted Vegetation Index (MSAVI)
+    def _MSAVI1(self):
+        """Compute the Modified Soil Adjusted Vegetation Index 1 (MSAVI1)
+        MSAVI formualtion (Qi et al., 1994)
+        Soil line slope (Heute et al., 1984)"""
+        Rred = np.interp(self.wlred,self.wl,self.rf,self.NaN,self.NaN)
+        Rnir = np.interp(self.wlnir,self.wl,self.rf,self.NaN,self.NaN)
+        NDVI = self._NDVI()
+        WDVI = self._WDVI()
+        a = self.solslp
+        L = 1.-2.*a*NDVI*WDVI
+        return (1+L)*(Rnir-Rred)/(Rnir+Rred+L)
+
+    def _MSAVI2(self):
+        """Compute the Modified Soil Adjusted Vegetation Index 2 (MSAVI2)
         (Qi et al., 1994)"""
         Rred = np.interp(self.wlred,self.wl,self.rf,self.NaN,self.NaN)
         Rnir = np.interp(self.wlnir,self.wl,self.rf,self.NaN,self.NaN)
         sqrterm = math.pow(2.*Rnir+1.,2.)
         return 0.5*(2.*Rnir+1.-math.sqrt(sqrterm-8.*(Rnir-Rred)))
 
-    def _MSR(self):
-        """Compute the Modified Simple Ratio (MSR) (Chen, 1996)"""
-        Rred = np.interp(self.wlred,self.wl,self.rf,self.NaN,self.NaN)
-        Rnir = np.interp(self.wlnir,self.wl,self.rf,self.NaN,self.NaN)
-        return (Rnir/Rred-1.)/(math.sqrt(Rnir/Rred)+1.)
-
-    def _ESUM(self):
-        """Compute the sum of first derivative values from 626 nm to 795
-        nm (ESUM) (Elvidge & Chen, 1995)"""
+    def _ESUM1(self):
+        """Compute the area of the first derivative red edge peak from
+        626 nm to 795 nm (ESUM1) (Elvidge & Chen, 1995)"""
         widx = np.where(np.logical_and(self.wl>=626.,self.wl<=795.))
-        return np.sum(self.rfd1[widx])
+        return np.sum(np.absolute(self.rfd1[widx])*self.bndwdth[widx])
+
+    def _ESUM2(self):
+        """Compute the area of the second derivative red edge peaks from
+        626 nm to 795 nm (ESUM2) (Elvidge & Chen, 1995)"""
+        widx = np.where(np.logical_and(self.wl>=626.,self.wl<=795.))
+        return np.sum(np.absolute(self.rfd2[widx])*self.bndwdth[widx])
 
     def _NDPI(self):
         """Compute the Normalized Difference Pigment Index (NDPI)
@@ -665,7 +769,7 @@ class VegSpec:
         R445 = np.interp(445.,self.wl,self.rf,self.NaN,self.NaN)
         R680 = np.interp(680.,self.wl,self.rf,self.NaN,self.NaN)
         R800 = np.interp(800.,self.wl,self.rf,self.NaN,self.NaN)
-        return (R800-R680)/(R800-R445)
+        return (R800-R445)/(R800-R680)
 
     def _SRPI(self):
         """Compute the Simple Ratio Pigment Index (SRPI)
@@ -687,6 +791,12 @@ class VegSpec:
         Rred = np.interp(self.wlred,self.wl,self.rf,self.NaN,self.NaN)
         Rnir = np.interp(self.wlnir,self.wl,self.rf,self.NaN,self.NaN)
         return (Rnir-Rred)/math.sqrt(Rnir+Rred)
+
+    def _MSR(self):
+        """Compute the Modified Simple Ratio (MSR) (Chen, 1996)"""
+        Rred = np.interp(self.wlred,self.wl,self.rf,self.NaN,self.NaN)
+        Rnir = np.interp(self.wlnir,self.wl,self.rf,self.NaN,self.NaN)
+        return (Rnir/Rred-1.)/(math.sqrt(Rnir/Rred+1.))
 
     def _PRI2(self):
         """Compute the Photochemical Reflectance Index 2 (PRI2)
@@ -719,20 +829,9 @@ class VegSpec:
     def _GNDVI(self):
         """Compute the Green Normalized Difference Vegetation Index
         (GNDVI) (Gitelson et al., 1996)"""
-        R550 = np.interp(550.,self.wl,self.rf,self.NaN,self.NaN)
-        R800 = np.interp(800.,self.wl,self.rf,self.NaN,self.NaN)
-        return (R800-R550)/(R800+R550)
-
-    def _GARI(self):
-        """Compute the Atmospherically Resistant Green Index (GARI)
-        (Gitelson et al., 1996)"""
-        Rblu = np.interp(self.wlblu,self.wl,self.rf,self.NaN,self.NaN)
         Rgrn = np.interp(self.wlgrn,self.wl,self.rf,self.NaN,self.NaN)
-        Rred = np.interp(self.wlred,self.wl,self.rf,self.NaN,self.NaN)
         Rnir = np.interp(self.wlnir,self.wl,self.rf,self.NaN,self.NaN)
-        num = Rnir-(Rgrn-1.7*(Rblu-Rred))
-        den = Rnir+(Rgrn-1.7*(Rblu-Rred))
-        return num/den
+        return (Rnir-Rgrn)/(Rnir+Rgrn)
 
     def _OSAVI(self):
         """Compute the Optimized Soil Adjusted Vegetation Index (OSAVI)
@@ -741,47 +840,53 @@ class VegSpec:
         Rnir = np.interp(self.wlnir,self.wl,self.rf,self.NaN,self.NaN)
         return (1.+0.16)*(Rnir-Rred)/(Rnir+Rred+0.16)
 
+    def _WI(self):
+        """Compute the Water Index (WI) (Penuelas et al., 1997)"""
+        R900 = np.interp(900.,self.wl,self.rf,self.NaN,self.NaN)
+        R970 = np.interp(970.,self.wl,self.rf,self.NaN,self.NaN)
+        return R900/R970
+
     def _PSSRA(self):
         """Compute the Pigment Specific Simple Ratio for chlA (PSSRA)
         (Blackburn, 1998a; 1998b)"""
-        R675 = np.interp(675.,self.wl,self.rf,self.NaN,self.NaN)
+        R680 = np.interp(680.,self.wl,self.rf,self.NaN,self.NaN)
         R800 = np.interp(800.,self.wl,self.rf,self.NaN,self.NaN)
-        return R800/R675
+        return R800/R680
 
     def _PSSRB(self):
         """Compute the Pigment Specific Simple Ratio for chlB (PSSRB)
         (Blackburn, 1998a; 1998b)"""
-        R650 = np.interp(650.,self.wl,self.rf,self.NaN,self.NaN)
+        R635 = np.interp(635.,self.wl,self.rf,self.NaN,self.NaN)
         R800 = np.interp(800.,self.wl,self.rf,self.NaN,self.NaN)
-        return R800/R650
+        return R800/R635
 
     def _PSSRC(self):
         """Compute the Pigment Specific Simple Ratio for carotenoid
         (PSSRC) (Blackburn, 1998a; 1998b)"""
-        R500 = np.interp(500.,self.wl,self.rf,self.NaN,self.NaN)
+        R470 = np.interp(470.,self.wl,self.rf,self.NaN,self.NaN)
         R800 = np.interp(800.,self.wl,self.rf,self.NaN,self.NaN)
-        return R800/R500
+        return R800/R470
 
     def _PSNDA(self):
         """Compute the Pigment Specific Normalized Difference for chlA
         (PSNDA) (Blackburn, 1998a; 1998b)"""
-        R675 = np.interp(675.,self.wl,self.rf,self.NaN,self.NaN)
+        R680 = np.interp(680.,self.wl,self.rf,self.NaN,self.NaN)
         R800 = np.interp(800.,self.wl,self.rf,self.NaN,self.NaN)
-        return (R800-R675)/(R800+R675)
+        return (R800-R680)/(R800+R680)
 
     def _PSNDB(self):
         """Compute the Pigment Specific Normalized Difference for chlB
         (PSNDB) (Blackburn, 1998a; 1998b)"""
-        R650 = np.interp(650.,self.wl,self.rf,self.NaN,self.NaN)
+        R635 = np.interp(635.,self.wl,self.rf,self.NaN,self.NaN)
         R800 = np.interp(800.,self.wl,self.rf,self.NaN,self.NaN)
-        return (R800-R650)/(R800+R650)
+        return (R800-R635)/(R800+R635)
 
     def _PSNDC(self):
         """Compute the Pigment Specific Normalized Difference for
         carotenoid (PSNDC) (Blackburn, 1998a; 1998b)"""
-        R500 = np.interp(500.,self.wl,self.rf,self.NaN,self.NaN)
+        R470 = np.interp(470.,self.wl,self.rf,self.NaN,self.NaN)
         R800 = np.interp(800.,self.wl,self.rf,self.NaN,self.NaN)
-        return (R800-R500)/(R800+R500)
+        return (R800-R470)/(R800+R470)
 
     def _DSR1(self):
         """Compute the Datt simple ratio 1 (DSR1) (Datt, 1998)"""
@@ -804,11 +909,19 @@ class VegSpec:
         R850 = np.interp(850.,self.wl,self.rf,self.NaN,self.NaN)
         return (R850-R710)/(R850-R680)
 
-    def _DDR(self):
-        """Compute the Datt derivative ratio (DDR) (Datt, 1999b)"""
+    def _DDR1(self):
+        """Compute the Datt first derivative ratio (DDR)
+        (Datt, 1999b)"""
         D704 = np.interp(704.,self.wl,self.rfd1,self.NaN,self.NaN)
         D754 = np.interp(754.,self.wl,self.rfd1,self.NaN,self.NaN)
         return D754/D704
+
+    def _DDR2(self):
+        """Compute the Datt second derivative ratio (DDR)
+        (Datt, 1999b)"""
+        DD688 = np.interp(688.,self.wl,self.rfd2,self.NaN,self.NaN)
+        DD712 = np.interp(712.,self.wl,self.rfd2,self.NaN,self.NaN)
+        return DD712/DD688
 
     def _GMSR(self):
         """Compute the Gammon simple ratio (GMSR)
@@ -828,10 +941,10 @@ class VegSpec:
     def _TVI(self):
         """Compute the Triangular Vegetation Index (TVI)
         (Broge & Leblanc, 2000)"""
-        Rgrn = np.interp(self.wlgrn,self.wl,self.rf,self.NaN,self.NaN)
-        Rred = np.interp(self.wlred,self.wl,self.rf,self.NaN,self.NaN)
-        Rnir = np.interp(self.wlnir,self.wl,self.rf,self.NaN,self.NaN)
-        return 0.5*(120.*(Rnir-Rgrn)-200.*(Rred-Rgrn))
+        R550 = np.interp(550.,self.wl,self.rf,self.NaN,self.NaN)
+        R670 = np.interp(670.,self.wl,self.rf,self.NaN,self.NaN)
+        R750 = np.interp(750.,self.wl,self.rf,self.NaN,self.NaN)
+        return 0.5*(120.*(R750-R550)-200.*(R670-R550))
 
     def _MCARI(self):
         """Compute the Modified Chlorophyll Absorption in Reflectance
@@ -844,13 +957,8 @@ class VegSpec:
     def _MOR(self):
         """Compute the MCARI OSAVI ratio (MOR)
         (Daughtry et al., 2000)"""
-        R550 = np.interp(550.,self.wl,self.rf,self.NaN,self.NaN)
-        R670 = np.interp(670.,self.wl,self.rf,self.NaN,self.NaN)
-        R700 = np.interp(700.,self.wl,self.rf,self.NaN,self.NaN)
-        Rred = np.interp(self.wlred,self.wl,self.rf,self.NaN,self.NaN)
-        Rnir = np.interp(self.wlnir,self.wl,self.rf,self.NaN,self.NaN)
-        MCARI = ((R700-R670)-0.2*(R700-R550))*(R700/R670)
-        OSAVI = (1.+0.16)*(Rnir-Rred)/(Rnir+Rred+0.16)
+        MCARI = self._MCARI()
+        OSAVI = self._OSAVI()
         return MCARI/OSAVI
 
     def _ZTSR1(self):
@@ -865,8 +973,8 @@ class VegSpec:
         (Zarco-Tejada et al., 2000a; 2000b; 2002; 2003; 2009)"""
         R683 = np.interp(683.,self.wl,self.rf,self.NaN,self.NaN)
         R675 = np.interp(675.,self.wl,self.rf,self.NaN,self.NaN)
-        R690 = np.interp(690.,self.wl,self.rf,self.NaN,self.NaN)
-        return (R675*R690)/(R683*R683)
+        R691 = np.interp(691.,self.wl,self.rf,self.NaN,self.NaN)
+        return (R683*R683)/(R675*R691)
 
     def _ZTDR1(self):
         """Compute the Zarco-Tejada derivative ratio 1 (ZTDR1)
@@ -885,10 +993,10 @@ class VegSpec:
     def _CAI(self):
         """Compute the Cellulose Absorption Index (CAI)
         (Daughtry, 2001)"""
-        R2000 = np.interp(2000.,self.wl,self.rf,self.NaN,self.NaN)
-        R2100 = np.interp(2100.,self.wl,self.rf,self.NaN,self.NaN)
-        R2200 = np.interp(2200.,self.wl,self.rf,self.NaN,self.NaN)
-        return 0.5*(R2000+R2200)-R2100
+        R2019 = np.interp(2019.,self.wl,self.rf,self.NaN,self.NaN)
+        R2109 = np.interp(2109.,self.wl,self.rf,self.NaN,self.NaN)
+        R2206 = np.interp(2206.,self.wl,self.rf,self.NaN,self.NaN)
+        return 0.5*(R2019+R2206)-R2109
 
     def _ARI(self):
         """Compute the Anthocyanin Reflectance Index (ARI)
@@ -942,85 +1050,92 @@ class VegSpec:
         y = [R600,R735]
         coef = np.polyfit(x,y,1)
         re = coef[0]*self.wl+coef[1]
-        req = self.rf[widx]/re[widx]
+        req = self.rf[widx]/re[widx]*self.bndwdth[widx]
         return np.sum(req)
 
     def _ZTSUM(self):
-        """Compute the sum of first derivative values from 680 nm to 760
-        nm (ZTSUM) (Zarco-Tejada et al., 2001)"""
+        """Compute the area of the first derivative peak from 680 nm to
+        760 nm (ZTSUM) (Zarco-Tejada et al., 2001b)"""
         widx = np.where(np.logical_and(self.wl>=680.,self.wl<=760.))
-        return np.sum(self.rfd1[widx])
+        return np.sum(self.rfd1[widx]*self.bndwdth[widx])
+
+    def _PRI3(self):
+        """Compute the Photochemical Reflectance Index 3 (PRI3)
+        (Zarco-Tejada et al., 2001b)"""
+        R531 = np.interp(531.,self.wl,self.rf,self.NaN,self.NaN)
+        R570 = np.interp(570.,self.wl,self.rf,self.NaN,self.NaN)
+        return (R531-R570)/(R531+R570)
 
     def _ZTDPR1(self):
         """Compute the Zarco-Tejada derivative peak ratio 1 (ZTDPR1)
-        (Zarco-Tejada et al., 2001)"""
-        pkwv = self.WLREIPG()
+        (Zarco-Tejada et al., 2001b)"""
+        pkwv = self._WLREIPG()
         Dp = np.interp(pkwv,self.wl,self.rfd1,self.NaN,self.NaN)
         Dp12 = np.interp(pkwv+12.,self.wl,self.rfd1,self.NaN,self.NaN)
         return Dp/Dp12
 
     def _ZTDPR2(self):
         """Compute the Zarco-Tejada derivative peak ratio 2 (ZTDPR2)
-        (Zarco-Tejada et al., 2001)"""
-        pkwv = self.WLREIPG()
+        (Zarco-Tejada et al., 2001b)"""
+        pkwv = self._WLREIPG()
         Dp = np.interp(pkwv,self.wl,self.rfd1,self.NaN,self.NaN)
         Dp22 = np.interp(pkwv+22.,self.wl,self.rfd1,self.NaN,self.NaN)
         return Dp/Dp22
 
     def _ZTDP21(self):
         """Compute the Zarco-Tejada derivative peak ratio 21 (ZTDP21)
-        (Zarco-Tejada et al., 2001)"""
-        pkwv = self.WLREIPG()
+        (Zarco-Tejada et al., 2001b)"""
+        pkwv = self._WLREIPG()
         Dp = np.interp(pkwv,self.wl,self.rfd1,self.NaN,self.NaN)
         D703 = np.interp(703.,self.wl,self.rfd1,self.NaN,self.NaN)
         return Dp/D703
 
     def _ZTDP22(self):
         """Compute the Zarco-Tejada derivative peak ratio 22 (ZTDP22)
-        (Zarco-Tejada et al., 2001)"""
-        pkwv = self.WLREIPG()
+        (Zarco-Tejada et al., 2001b)"""
+        pkwv = self._WLREIPG()
         Dp = np.interp(pkwv,self.wl,self.rfd1,self.NaN,self.NaN)
         D720 = np.interp(720.,self.wl,self.rfd1,self.NaN,self.NaN)
         return Dp/D720
 
     def _GI(self):
         """Compute the Greeness Index (GI)
-        (Zarco-Tejada et al., 2001)"""
+        (Zarco-Tejada et al., 2001b)"""
         R554 = np.interp(554.,self.wl,self.rf,self.NaN,self.NaN)
         R677 = np.interp(677.,self.wl,self.rf,self.NaN,self.NaN)
         return R554/R677
 
     def _ZTSR3(self):
         """Compute the Zarco-Tejada simple ratio 3 (ZTSR3)
-        (Zarco-Tejada et al., 2001)"""
+        (Zarco-Tejada et al., 2001a)"""
         R630 = np.interp(630.,self.wl,self.rf,self.NaN,self.NaN)
         R680 = np.interp(680.,self.wl,self.rf,self.NaN,self.NaN)
         return R680/R630
 
     def _ZTSR4(self):
         """Compute the Zarco-Tejada simple ratio 4 (ZTSR4)
-        (Zarco-Tejada et al., 2001)"""
+        (Zarco-Tejada et al., 2001a)"""
         R630 = np.interp(630.,self.wl,self.rf,self.NaN,self.NaN)
         R685 = np.interp(685.,self.wl,self.rf,self.NaN,self.NaN)
         return R685/R630
 
     def _ZTSR5(self):
         """Compute the Zarco-Tejada simple ratio 5 (ZTSR5)
-        (Zarco-Tejada et al., 2001)"""
+        (Zarco-Tejada et al., 2001a)"""
         R630 = np.interp(630.,self.wl,self.rf,self.NaN,self.NaN)
         R687 = np.interp(687.,self.wl,self.rf,self.NaN,self.NaN)
         return R687/R630
 
     def _ZTSR6(self):
         """Compute the Zarco-Tejada simple ratio 6 (ZTSR6)
-        (Zarco-Tejada et al., 2001)"""
+        (Zarco-Tejada et al., 2001a)"""
         R630 = np.interp(630.,self.wl,self.rf,self.NaN,self.NaN)
         R690 = np.interp(690.,self.wl,self.rf,self.NaN,self.NaN)
         return R690/R630
 
     def _VARI(self):
         """Compute the Visible Atmospherically Resistant Index (VARI)
-        (Gitelson et al., 2002)"""
+        (Gitelson et al., 2002a)"""
         Rblu = np.interp(self.wlblu,self.wl,self.rf,self.NaN,self.NaN)
         Rgrn = np.interp(self.wlgrn,self.wl,self.rf,self.NaN,self.NaN)
         Rred = np.interp(self.wlred,self.wl,self.rf,self.NaN,self.NaN)
@@ -1028,17 +1143,17 @@ class VegSpec:
 
     def _CRI500(self):
         """Compute the Carotenoid Reflectance Index (CRI500)
-        (Gitelson et al., 2002)"""
+        (Gitelson et al., 2002b)"""
         R510 = np.interp(510.,self.wl,self.rf,self.NaN,self.NaN)
         R550 = np.interp(550.,self.wl,self.rf,self.NaN,self.NaN)
-        return (1.0/R510)-(1.0/R550)
+        return (1./R510)-(1./R550)
 
     def _CRI700(self):
         """Compute the Carotenoid Reflectance Index (CRI700)
-        (Gitelson et al., 2002)"""
+        (Gitelson et al., 2002b)"""
         R510 = np.interp(510.,self.wl,self.rf,self.NaN,self.NaN)
         R700 = np.interp(700.,self.wl,self.rf,self.NaN,self.NaN)
-        return (1.0/R510)-(1.0/R700)
+        return (1./R510)-(1./R700)
 
     def _TCARI(self):
         """Compute the Transformed Chlorophyll Absorption Ratio Index
@@ -1046,18 +1161,13 @@ class VegSpec:
         R550 = np.interp(550.,self.wl,self.rf,self.NaN,self.NaN)
         R670 = np.interp(670.,self.wl,self.rf,self.NaN,self.NaN)
         R700 = np.interp(700.,self.wl,self.rf,self.NaN,self.NaN)
-        return 3.0*((R700-R670)-0.2*(R700-R550)*(R700/R670))
+        return 3.*((R700-R670)-0.2*(R700-R550)*(R700/R670))
 
     def _TOR(self):
         """Compute the TCARI OSAVI ratio (TOR)
         (Haboudane et al., 2002)"""
-        R550 = np.interp(550.,self.wl,self.rf,self.NaN,self.NaN)
-        R670 = np.interp(670.,self.wl,self.rf,self.NaN,self.NaN)
-        R700 = np.interp(700.,self.wl,self.rf,self.NaN,self.NaN)
-        Rred = np.interp(self.wlred,self.wl,self.rf,self.NaN,self.NaN)
-        Rnir = np.interp(self.wlnir,self.wl,self.rf,self.NaN,self.NaN)
-        TCARI = 3.0*((R700-R670)-0.2*(R700-R550)*(R700/R670))
-        OSAVI = (1.+0.16)*(Rnir-Rred)/(Rnir+Rred+0.16)
+        TCARI = self._TCARI()
+        OSAVI = self._OSAVI()
         return TCARI/OSAVI
 
     def _EVI(self):
@@ -1066,15 +1176,15 @@ class VegSpec:
         Rblu = np.interp(self.wlblu,self.wl,self.rf,self.NaN,self.NaN)
         Rred = np.interp(self.wlred,self.wl,self.rf,self.NaN,self.NaN)
         Rnir = np.interp(self.wlnir,self.wl,self.rf,self.NaN,self.NaN)
-        return 2.5*((Rnir-Rred)/(Rnir+(6.0*Rred)-(7.5*Rblu)+1.0))
+        return 2.5*((Rnir-Rred)/(Rnir+(6.*Rred)-(7.5*Rblu)+1.))
 
     def _NDNI(self):
         """Compute the Normalized Difference Nitrogen Index (NDNI)
         (Serrano et al., 2002)"""
         R1510 = np.interp(1510.,self.wl,self.rf,self.NaN,self.NaN)
         R1680 = np.interp(1680.,self.wl,self.rf,self.NaN,self.NaN)
-        num=math.log10(1.0/R1510)-math.log10(1.0/R1680)
-        den=math.log10(1.0/R1510)+math.log10(1.0/R1680)
+        num=math.log10(1./R1510)-math.log10(1./R1680)
+        den=math.log10(1./R1510)+math.log10(1./R1680)
         return num/den
 
     def _NDLI(self):
@@ -1082,8 +1192,8 @@ class VegSpec:
         (Serrano et al., 2002)"""
         R1754 = np.interp(1754.,self.wl,self.rf,self.NaN,self.NaN)
         R1680 = np.interp(1680.,self.wl,self.rf,self.NaN,self.NaN)
-        num=math.log(1.0/R1754)-math.log(1.0/R1680)
-        den=math.log(1.0/R1754)+math.log(1.0/R1680)
+        num=math.log10(1./R1754)-math.log10(1./R1680)
+        den=math.log10(1./R1754)+math.log10(1./R1680)
         return num/den
 
     def _MSR2(self):
@@ -1100,30 +1210,37 @@ class VegSpec:
         R445 = np.interp(445.,self.wl,self.rf,self.NaN,self.NaN)
         R705 = np.interp(705.,self.wl,self.rf,self.NaN,self.NaN)
         R750 = np.interp(750.,self.wl,self.rf,self.NaN,self.NaN)
-        return (R750-R705)/(R750+R705-2.0*R445)
+        return (R750-R705)/(R750+R705-2.*R445)
 
     def _GRRGM(self):
         """Compute the Gitelson Reciprocal Reflectance Green Model
         (GRRGM) (Gitelson et al., 2003; 2005)"""
         Rgrn = np.interp(self.wlgrn,self.wl,self.rf,self.NaN,self.NaN)
         Rnir = np.interp(self.wlnir,self.wl,self.rf,self.NaN,self.NaN)
-        return Rnir/Rgrn-1.0
+        return Rnir/Rgrn-1.
 
     def _GRRREM(self):
         """Compute the Gitelson Reciprocal Reflectance Red Edge Model
         (GRRREM) (Gitelson et al., 2003; 2005)"""
-        wlre = self.WLREIP()
+        wlre = self._WLREIP()
         Rre = np.interp(wlre,self.wl,self.rf,self.NaN,self.NaN)
         Rnir = np.interp(self.wlnir,self.wl,self.rf,self.NaN,self.NaN)
-        return Rnir/Rre-1.0
+        return Rnir/Rre-1.
 
     def _DPI(self):
         """Compute the Double-Peak Index (DPI)
-        (Zarco-Tejada et al., 2003)"""
+        (Zarco-Tejada et al., 2003a)"""
         D688 = np.interp(688.,self.wl,self.rfd1,self.NaN,self.NaN)
         D697 = np.interp(697.,self.wl,self.rfd1,self.NaN,self.NaN)
         D710 = np.interp(710.,self.wl,self.rfd1,self.NaN,self.NaN)
         return (D688*D710)/(D697*D697)
+
+    def _SRWI(self):
+        """Compute the Simple Ratio Water Index (SRWI)
+        (Zarco-Tejada et al., 2003b)"""
+        R860 = np.interp(860.,self.wl,self.rf,self.NaN,self.NaN)
+        R1240 = np.interp(1240.,self.wl,self.rf,self.NaN,self.NaN)
+        return R860/R1240
 
     def _MTCI(self):
         """Compute the MERIS Terrestrial Chlorophyll Index (MTCI)
@@ -1132,6 +1249,13 @@ class VegSpec:
         R709 = np.interp(709.,self.wl,self.rf,self.NaN,self.NaN)
         R754 = np.interp(754.,self.wl,self.rf,self.NaN,self.NaN)
         return (R754-R709)/(R709-R681)
+
+    def _WDRVI(self,a=0.15):
+        """Compute the Wide Dynamic Range Vegetation Index (WDRVI)
+        (Gitelson, 2004)"""
+        Rred = np.interp(self.wlred,self.wl,self.rf,self.NaN,self.NaN)
+        Rnir = np.interp(self.wlnir,self.wl,self.rf,self.NaN,self.NaN)
+        return (a*Rnir-Rred)/(a*Rnir+Rred)
 
     def _MCARI1(self):
         """Compute the Modified Chlorophyll Absorption in Reflectance
@@ -1148,8 +1272,8 @@ class VegSpec:
         R670 = np.interp(670.,self.wl,self.rf,self.NaN,self.NaN)
         R800 = np.interp(800.,self.wl,self.rf,self.NaN,self.NaN)
         num = 1.5*(2.5*(R800-R670)-1.3*(R800-R550))
-        den1 = (2.0*R800+1.0)*(2.0*R800+1.0)
-        den2 = 6.0*R800 - 5.0*math.sqrt(R670)
+        den1 = (2.0*R800+1.)*(2.0*R800+1.)
+        den2 = 6.*R800 - 5.*math.sqrt(R670)
         return num / math.sqrt(den1-den2-0.5)
 
     def _MTVI1(self):
@@ -1167,8 +1291,8 @@ class VegSpec:
         R670 = np.interp(670.,self.wl,self.rf,self.NaN,self.NaN)
         R800 = np.interp(800.,self.wl,self.rf,self.NaN,self.NaN)
         num = 1.5*(1.2*(R800-R550)-2.5*(R670-R550))
-        den1 = (2.0*R800+1.0)*(2.0*R800+1.0)
-        den2 = 6.0*R800 - 5.0*math.sqrt(R670)
+        den1 = (2.*R800+1.)*(2.*R800+1.)
+        den2 = 6.*R800 - 5.*math.sqrt(R670)
         return num / math.sqrt(den1-den2-0.5)
 
     def _DD(self):
@@ -1183,10 +1307,10 @@ class VegSpec:
     def _LCA(self):
         """Compute the Lignin Cellulose Absorption Index (LCA)
         (Daughtry et al., 2005)"""
-        ASTER5 = np.interp(2165.,self.wl,self.rf,self.NaN,self.NaN)
-        ASTER6 = np.interp(2205.,self.wl,self.rf,self.NaN,self.NaN)
-        ASTER8 = np.interp(2330.,self.wl,self.rf,self.NaN,self.NaN)
-        return 100*((ASTER6-ASTER5)+(ASTER6-ASTER8))
+        R2165 = np.interp(2165.,self.wl,self.rf,self.NaN,self.NaN)
+        R2205 = np.interp(2205.,self.wl,self.rf,self.NaN,self.NaN)
+        R2330 = np.interp(2330.,self.wl,self.rf,self.NaN,self.NaN)
+        return 100.*((R2205-R2165)+(R2205-R2330))
 
     def _RGI(self):
         """Compute the Red Green Pigment Index (RGI)
@@ -1236,14 +1360,14 @@ class VegSpec:
         x2 = [725.,760.]
         y2 = [D725,D760]
         coef2 = np.polyfit(x2,y2,1)
-        return -1.0*(coef1[1]-coef2[1])/(coef1[0]-coef2[0])
+        return -1.*(coef1[1]-coef2[1])/(coef1[0]-coef2[0])
 
     def _RVIOPT(self):
         """Compute the Reyniers VIopt (RVIOPT)
         (Reyniers et al., 2006)"""
         Rred = np.interp(self.wlred,self.wl,self.rf,self.NaN,self.NaN)
         Rnir = np.interp(self.wlnir,self.wl,self.rf,self.NaN,self.NaN)
-        return (1.0+0.45)*(Rnir*Rnir+1.0)/(Rred+0.45)
+        return (1.+0.45)*(Rnir*Rnir+1.)/(Rred+0.45)
 
     def _SPVI(self):
         """Compute the Spectral Polygon Vegetation Index (SPVI)
@@ -1256,16 +1380,9 @@ class VegSpec:
     def _MMR(self):
         """Compute the MCARI MTVI2 ratio (MMR)
         (Eitel et al., 2007; 2008)"""
-        R550 = np.interp(550.,self.wl,self.rf,self.NaN,self.NaN)
-        R670 = np.interp(670.,self.wl,self.rf,self.NaN,self.NaN)
-        R700 = np.interp(700.,self.wl,self.rf,self.NaN,self.NaN)
-        R800 = np.interp(800.,self.wl,self.rf,self.NaN,self.NaN)
-        MCARI = ((R700-R670)-0.2*(R700-R550))*(R700/R670)
-        num = 1.5*(1.2*(R800-R550)-2.5*(R670-R550))
-        den1 = (2.0*R800+1.0)*(2.0*R800+1.0)
-        den2 = 6.0*R800 - 5.0*math.sqrt(R670)
-        MTVI2 = num / math.sqrt(den1-den2-0.5)
-        return MCARI / MTVI2
+        MCARI = self._MCARI()
+        MTVI2 = self._MTVI2()
+        return MCARI/MTVI2
 
     def _TCI(self):
         """Compute the Triangular Chlorophyll Index (TCI)
@@ -1280,7 +1397,7 @@ class VegSpec:
         (Jiang et al., 2008)"""
         Rred = np.interp(self.wlred,self.wl,self.rf,self.NaN,self.NaN)
         Rnir = np.interp(self.wlnir,self.wl,self.rf,self.NaN,self.NaN)
-        return 2.5*(Rnir-Rred)/(Rnir+2.4*Rred+1.0)
+        return 2.5*(Rnir-Rred)/(Rnir+2.4*Rred+1.)
 
     def _DDN(self):
         """Compute the New Double Difference Index (DDN)
@@ -1288,7 +1405,7 @@ class VegSpec:
         R660 = np.interp(660.,self.wl,self.rf,self.NaN,self.NaN)
         R710 = np.interp(710.,self.wl,self.rf,self.NaN,self.NaN)
         R760 = np.interp(760.,self.wl,self.rf,self.NaN,self.NaN)
-        return 2.0*R710-R660-R760
+        return 2.*R710-R660-R760
 
     def _CVI(self):
         """Compute the Chlorophyll Vegetation Index (CVI)
@@ -1297,6 +1414,14 @@ class VegSpec:
         Rred = np.interp(self.wlred,self.wl,self.rf,self.NaN,self.NaN)
         Rnir = np.interp(self.wlnir,self.wl,self.rf,self.NaN,self.NaN)
         return (Rnir*Rred)/(Rgrn*Rgrn)
+
+    def _WUTCARI(self):
+        """Compute the Transformed Chlorophyll Absorption Ratio Index
+        with Wu's modification (WUTCARI) (Wu et al., 2008)"""
+        R550 = np.interp(550.,self.wl,self.rf,self.NaN,self.NaN)
+        R705 = np.interp(705.,self.wl,self.rf,self.NaN,self.NaN)
+        R750 = np.interp(750.,self.wl,self.rf,self.NaN,self.NaN)
+        return 3.*((R750-R705)-0.2*(R750-R550)*(R750/R705))
 
     def _WUOSAVI(self):
         """Compute the Optimized Soil-Adjusted Vegetation Index with
@@ -1323,22 +1448,16 @@ class VegSpec:
     def _WUTOR(self):
         """Compute the TCARI OSAVI ratio with Wu's modification (WUTOR)
         (Wu et al., 2008)"""
-        R550 = np.interp(550.,self.wl,self.rf,self.NaN,self.NaN)
-        R705 = np.interp(705.,self.wl,self.rf,self.NaN,self.NaN)
-        R750 = np.interp(750.,self.wl,self.rf,self.NaN,self.NaN)
-        TCARI = 3.0*((R750-R705)-0.2*(R750-R550)*(R750/R705))
-        OSAVI = (1.+0.16)*(R750-R705)/(R750+R705+0.16)
-        return TCARI/OSAVI
+        WUTCARI = self._WUTCARI()
+        WUOSAVI = self._WUOSAVI()
+        return WUTCARI/WUOSAVI
 
     def _WUMOR(self):
         """Compute the MCARI OSAVI ratio with Wu's modification (WUMOR)
         (Wu et al., 2008)"""
-        R550 = np.interp(550.,self.wl,self.rf,self.NaN,self.NaN)
-        R705 = np.interp(705.,self.wl,self.rf,self.NaN,self.NaN)
-        R750 = np.interp(750.,self.wl,self.rf,self.NaN,self.NaN)
-        MCARI = ((R750-R705)-0.2*(R750-R550))*(R750/R705)
-        OSAVI = (1.+0.16)*(R750-R705)/(R750+R705+0.16)
-        return MCARI/OSAVI
+        WUMCARI = self._WUMCARI()
+        WUOSAVI = self._WUOSAVI()
+        return WUMCARI/WUOSAVI
 
     def _DCNI(self):
         """Compute the Double-peak Canopy Nitrogen Index (DCNI)
@@ -1356,11 +1475,12 @@ class VegSpec:
         R670 = np.interp(670.,self.wl,self.rf,self.NaN,self.NaN)
         return -0.5*((670.-480.)*(R670-R550)-(670.-550.)*(R670-R480))
 
-    def _WDRVI(self):
-        """Compute the WDRVI (WDRVI) (Peng & Gitelson, 2011)"""
+    def _WDRVI2(self,a=0.2):
+        """Compute the Wide Dynamic Range Vegetation Index 2 (WDRVI2)
+        (Peng & Gitelson, 2011)"""
         Rred = np.interp(self.wlred,self.wl,self.rf,self.NaN,self.NaN)
         Rnir = np.interp(self.wlnir,self.wl,self.rf,self.NaN,self.NaN)
-        return (0.2*Rnir-Rred)/(0.2*Rnir+Rred)+0.67
+        return (a*Rnir-Rred)/(a*Rnir+Rred)+(1.-a)/(1.+a)
 
     def _AIVI(self):
         """Compute the Angular Insensitivity Vegetation Index (AIVI)
@@ -1377,3 +1497,9 @@ class VegSpec:
         D522 = np.interp(522.,self.wl,self.rfd1,self.NaN,self.NaN)
         D728 = np.interp(728.,self.wl,self.rfd1,self.NaN,self.NaN)
         return (D522-D728)/(D522+D728)
+
+    def _GRSUM(self):
+        """Compute the area of the green reflectance peak from 500 nm
+        to 600 nm (GRSUM) (Thorp and Thompson)"""
+        widx = np.where(np.logical_and(self.wl>=500.,self.wl<=600.))
+        return np.sum(self.rf[widx]*self.bndwdth[widx])

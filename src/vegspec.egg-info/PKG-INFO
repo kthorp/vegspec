@@ -1,0 +1,19 @@
+Metadata-Version: 2.1
+Name: vegspec
+Version: 1.0.0
+Summary: Vegetative spectral indices and transformations
+Home-page: http://github.com/kthorp/vegspec
+Author: Dr. Kelly R. Thorp
+Author-email: kelly.thorp@usda.gov
+License: Public Domain
+Project-URL: Source, http://github.com/kthorp/vegspec
+Project-URL: Bug Tracker, http://github.com/kthorp/vegspec/issues
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE.md
+Requires-Dist: numpy
+Requires-Dist: scipy
+
+# vegspec

@@ -1,0 +1,661 @@
+\begin{thebibliography}{}
+
+\bibitem[{B}aret et~al., 1989]{Baret1989}
+{B}aret, F., {G}uyot, D., and {M}ajor, D.~J. (1989).
+\newblock {TSAVI}: {A} vegetation index which minimizes soil brightness effects
+  on {LAI} and {APAR} estimation.
+\newblock In {\em {P}roceedings of the 12th {C}anadian {S}ymposium on {R}emote
+  {S}ensing, {IGARSS} '89}, volume~3, pages 1355--1358, Piscataway, NJ, USA.
+  Vancouver, Canada, 10-14 July, {IEEE}.
+
+\bibitem[{B}aret and {G}uyot, 1991]{Baret1991}
+{B}aret, F. and {G}uyot, G. (1991).
+\newblock {P}otentials and limits of vegetation indices for {LAI} and {APAR}
+  assessment.
+\newblock {\em {R}emote {S}ensing of {E}nvironment}, 35(2--3):161--173.
+
+\bibitem[{B}irth and {M}c{V}ey, 1968]{Birth1968}
+{B}irth, G.~S. and {M}c{V}ey, G.~R. (1968).
+\newblock {M}easuring the color of growing turf with a reflectance
+  spectrophotometer.
+\newblock {\em {A}gronomy {J}ournal}, 60(6):640--643.
+
+\bibitem[{B}lackburn, 1998a]{Blackburn1998a}
+{B}lackburn, G.~A. (1998a).
+\newblock {Q}uantifying chlorophylls and carotenoids at leaf and canopy scales:
+  {A}n evaluation of some hyperspectral approaches.
+\newblock {\em {R}emote {S}ensing of {E}nvironment}, 66:273--285.
+
+\bibitem[{B}lackburn, 1998b]{Blackburn1998b}
+{B}lackburn, G.~A. (1998b).
+\newblock {S}pectral indices for estimating photosynthetic pigment
+  concentrations: {A} test using senescent tree leaves.
+\newblock {\em {I}nternational {J}ournal of {R}emote {S}ensing},
+  19(4):657--675.
+
+\bibitem[{B}oochs et~al., 1990]{Boochs1990}
+{B}oochs, F., {K}upfer, G., {D}ockter, K., and {K}{\"{u}}hbauch, W. (1990).
+\newblock {S}hape of the red edge as vitality indicator for plants.
+\newblock {\em {I}nternational {J}ournal of {R}emote {S}ensing},
+  11(10):1741--1753.
+
+\bibitem[{B}roge and {L}eblanc, 2000]{Broge2000}
+{B}roge, N.~H. and {L}eblanc, E. (2000).
+\newblock {C}omparing prediction power and stability of broadband and
+  hyperspectral vegetation indices for estimation of green leaf area index and
+  canopy chlorophyll density.
+\newblock {\em {R}emote {S}ensing of {E}nvironment}, 76(2):156--172.
+
+\bibitem[{B}uschmann and {N}agel, 1993]{Buschmann1993}
+{B}uschmann, C. and {N}agel, E. (1993).
+\newblock {I}n vivo spectroscopy and internal optics of leaves as basis for
+  remote sensing of vegetation.
+\newblock {\em {I}nternational {J}ournal of {R}emote {S}ensing},
+  14(4):711--722.
+
+\bibitem[{C}arter, 1994]{Carter1994}
+{C}arter, G.~A. (1994).
+\newblock {R}atios of leaf reflectances in narrow wavebands as indicators of
+  plant stress.
+\newblock {\em {I}nternational {J}ournal of {R}emote {S}ensing},
+  15(3):697--703.
+
+\bibitem[{C}happelle et~al., 1992]{Chappelle1992}
+{C}happelle, E.~W., {K}im, M.~S., and {M}c{M}urtrey {III}, J.~E. (1992).
+\newblock {R}atio analysis of reflectance spectra ({RARS}): {A}n algorithm for
+  the remote estimation of the concentrations of chlorophyll {A}, chlorophyll
+  {B}, and carotenoids in soybean leaves.
+\newblock {\em {R}emote {S}ensing of {E}nvironment}, 39(3):239--247.
+
+\bibitem[{C}hen, 1996]{Chen1996}
+{C}hen, J.~M. (1996).
+\newblock {E}valuation of vegetation indices and a modified simple ratio for
+  boreal applications.
+\newblock {\em {C}anadian {J}ournal of {R}emote {S}ensing}, 22(3):229--242.
+
+\bibitem[{C}hen et~al., 2010]{Chen2010}
+{C}hen, P., {H}aboudane, D., {T}remblay, N., {W}ang, J., {V}igneault, P., and
+  {L}i, B. (2010).
+\newblock {N}ew spectral indicator assessing the efficiency of crop nitrogen
+  treatment in corn and wheat.
+\newblock {\em {R}emote {S}ensing of {E}nvironment}, 114(9):1987--1997.
+
+\bibitem[{C}ho and {S}kidmore, 2006]{Cho2006}
+{C}ho, M.~A. and {S}kidmore, A.~K. (2006).
+\newblock {A} new technique for extracting the red edge position from
+  hyperspectral data: {T}he linear extrapolation method.
+\newblock {\em {R}emote {S}ensing of {E}nvironment}, 101(2):181--193.
+
+\bibitem[{C}levers, 1989]{Clevers1989}
+{C}levers, J. G. P.~W. (1989).
+\newblock {A}pplication of a weighted infrared{-}red vegetation index for
+  estimating leaf area index by correcting for soil moisture.
+\newblock {\em {R}emote {S}ensing of {E}nvironment}, 29(1):25--37.
+
+\bibitem[{C}ollins, 1978]{Collins1978}
+{C}ollins, W. (1978).
+\newblock {R}emote sensing of crop type and maturity.
+\newblock {\em {P}hotogrammetric {E}ngineering and {R}emote {S}ensing},
+  44(1):43--55.
+
+\bibitem[{C}urran et~al., 2001]{Curran2001}
+{C}urran, P.~J., {D}ungan, J.~L., and {P}eterson, D.~L. (2001).
+\newblock {E}stimating the foliar biochemical concentration of leaves with
+  reflectance spectrometry: {T}esting the {K}okaly and {C}lark methodologies.
+\newblock {\em {R}emote {S}ensing of {E}nvironment}, 76(3):349--359.
+
+\bibitem[{D}ash and {C}urran, 2004]{Dash2004}
+{D}ash, J. and {C}urran, P.~J. (2004).
+\newblock {T}he {MERIS} terrestrial chlorophyll index.
+\newblock {\em {I}nternational {J}ournal of {R}emote {S}ensing},
+  25(23):5403--5413.
+
+\bibitem[{D}att, 1998]{Datt1998}
+{D}att, B. (1998).
+\newblock {R}emote sensing of chlorophyll a, chlorophyll b, chlorophyll a+b,
+  and total carotenoid content in eucalyptus leaves.
+\newblock {\em {R}emote {S}ensing of {E}nvironment}, 66(2):111--121.
+
+\bibitem[{D}att, 1999a]{Datt1999a}
+{D}att, B. (1999a).
+\newblock {A} new reflectance index for remote sensing of chlorophyll content
+  in higher plants: {T}ests using {E}ucalyptus leaves.
+\newblock {\em {J}ournal of {P}lant {P}hysiology}, 154(1):30--36.
+
+\bibitem[{D}att, 1999b]{Datt1999b}
+{D}att, B. (1999b).
+\newblock {V}isible/near infrared reflectance and chlorophyll content in
+  eucalyptus leaves.
+\newblock {\em {I}nternational {J}ournal of {R}emote {S}ensing},
+  20(14):2741--2759.
+
+\bibitem[{D}aughtry, 2001]{Daughtry2001}
+{D}aughtry, C. S.~T. (2001).
+\newblock {D}iscriminating crop residues from soil by shortwave infrared
+  reflectance.
+\newblock {\em {A}gronomy {J}ournal}, 93(1):125--131.
+
+\bibitem[{D}aughtry et~al., 2005]{Daughtry2005}
+{D}aughtry, C. S.~T., {H}unt, {J}r., E.~R., {D}oraiswamy, P.~C., and
+  {M}c{M}urtrey {III}, J.~E. (2005).
+\newblock {R}emote sensing the spatial distribution of crop residues.
+\newblock {\em {A}gronomy {J}ournal}, 97(3):864--871.
+
+\bibitem[{D}aughtry et~al., 2000]{Daughtry2000}
+{D}aughtry, C. S.~T., {W}althall, C.~L., {K}im, M.~S., {D}e {C}olstoun, E.~B.,
+  and {M}c{M}urtrey, {III}, J.~E. (2000).
+\newblock {E}stimating corn leaf chlorophyll concentration from leaf and canopy
+  reflectance.
+\newblock {\em {R}emote {S}ensing of {E}nvironment}, 74(2):229--239.
+
+\bibitem[{E}itel et~al., 2007]{Eitel2007}
+{E}itel, J. U.~H., {L}ong, D.~S., {G}essler, P.~E., and {S}mith, A. M.~S.
+  (2007).
+\newblock {U}sing in{-}situ measurements to evaluate the new {R}apid{E}ye™
+  satellite series for prediction of wheat nitrogen status.
+\newblock {\em {I}nternational {J}ournal of {R}emote {S}ensing},
+  28(18):4183--4190.
+
+\bibitem[{E}lvidge and {C}hen, 1995]{Elvidge1995}
+{E}lvidge, C.~D. and {C}hen, Z. (1995).
+\newblock {C}omparison of broad{-}band and narrow{-}band red and
+  near{-}infrared vegetation indices.
+\newblock {\em {R}emote {S}ensing of {E}nvironment}, 54:38--48.
+
+\bibitem[Filella et~al., 1996]{Filella1996}
+Filella, I., Amaro, T., Araus, J.~L., and Pe{\~{n}}uelas, J. (1996).
+\newblock {R}elationship between photosynthetic radiation{-}use efficiency of
+  barley canopies and the photochemical reflectance index ({PRI}).
+\newblock {\em {P}hysiologia {P}lantarum}, 96(2):211--216.
+
+\bibitem[{F}ilella and {P}e{\~{n}}uelas, 1994]{Filella1994}
+{F}ilella, I. and {P}e{\~{n}}uelas, J. (1994).
+\newblock {T}he red edge position and shape as indicators of plant chlorophyll
+  content, biomass and hydric status.
+\newblock {\em {I}nternational {J}ournal of {R}emote {S}ensing},
+  15(7):1459--1470.
+
+\bibitem[Filella et~al., 1995]{Filella1995}
+Filella, I., Serrano, L., Serra, J., and Pe{\~{n}}uelas, J. (1995).
+\newblock {E}valuating wheat nitrogen status with canopy reflectance indices
+  and discriminant analysis.
+\newblock {\em {C}rop {S}cience}, 35(5):1400--1405.
+
+\bibitem[{G}amon et~al., 1992]{Gamon1992}
+{G}amon, J.~A., {P}e{\~{n}}uelas, J., and {F}ield, C.~B. (1992).
+\newblock {A} narrow{-}waveband spectral index that tracks diurnal changes in
+  photosynthetic efficiency.
+\newblock {\em {R}emote {S}ensing of {E}nvironment}, 41(1):35--44.
+
+\bibitem[{G}amon and {S}urfus, 1999]{Gamon1999}
+{G}amon, J.~A. and {S}urfus, J.~S. (1999).
+\newblock {A}ssessing leaf pigment content and activity with a reflectometer.
+\newblock {\em {N}ew {P}hytologist}, 143(1):105--117.
+
+\bibitem[{G}ao, 1996]{Gao1996}
+{G}ao, B. (1996).
+\newblock {NDWI} {-} {A} normalized difference water index for remote sensing
+  of vegetation liquid water from space.
+\newblock {\em {R}emote {S}ensing of {E}nvironment}, 58(3):257--266.
+
+\bibitem[{G}itelson and {M}erzlyak, 1994]{Gitelson1994}
+{G}itelson, A. and {M}erzlyak, M.~N. (1994).
+\newblock {Q}uantitative estimation of chlorophyll{-}a using reflectance
+  spectra: {E}xperiments with autumn chestnut and maple leaves.
+\newblock {\em {J}ournal of {P}hotochemistry and {P}hotobiology, {B}:
+  {B}iology}, 22(3):247--252.
+
+\bibitem[{G}itelson, 2004]{Gitelson2004}
+{G}itelson, A.~A. (2004).
+\newblock {W}ide dynamic range vegetation index for remote quantification of
+  biophysical characteristics of vegetation.
+\newblock {\em {J}ournal of {P}lant {P}hysiology}, 161(2):165--173.
+
+\bibitem[{G}itelson et~al., 2003]{Gitelson2003}
+{G}itelson, A.~A., {G}ritz, Y., and {M}erzlyak, M.~N. (2003).
+\newblock {R}elationships between leaf chlorophyll content and spectral
+  reflectance and algorithms for non{-}destructive chlorophyll assessment in
+  higher plant leaves.
+\newblock {\em {J}ournal of {P}lant {P}hysiology}, 160(3):271--282.
+
+\bibitem[{G}itelson et~al., 1996]{Gitelson1996a}
+{G}itelson, A.~A., {K}aufman, Y.~J., and {M}erzlyak, M.~N. (1996).
+\newblock {U}se of a green channel in remote sensing of global vegetation from
+  {EOS-MODIS}.
+\newblock {\em {R}emote {S}ensing of {E}nvironment}, 58(3):289--298.
+
+\bibitem[{G}itelson et~al., 2002a]{Gitelson2002b}
+{G}itelson, A.~A., {K}aufman, Y.~J., {S}tark, R., and {R}undquist, D. (2002a).
+\newblock {N}ovel algorithms for remote estimation of vegetation fraction.
+\newblock {\em {R}emote {S}ensing of {E}nvironment}, 80(1):76--87.
+
+\bibitem[{G}itelson and {M}erzlyak, 1996]{Gitelson1996b}
+{G}itelson, A.~A. and {M}erzlyak, M.~N. (1996).
+\newblock {S}ignature analysis of leaf reflectance spectra: {A}lgorithm
+  development for remote sensing of chlorophyll.
+\newblock {\em {J}ournal of {P}lant {P}hysiology}, 148(3-4):494--500.
+
+\bibitem[{G}itelson and {M}erzlyak, 1997]{Gitelson1997}
+{G}itelson, A.~A. and {M}erzlyak, M.~N. (1997).
+\newblock {R}emote estimation of chlorophyll content in higher plant leaves.
+\newblock {\em {I}nternational {J}ournal of {R}emote {S}ensing},
+  18(12):2691--2697.
+
+\bibitem[{G}itelson et~al., 2001]{Gitelson2001}
+{G}itelson, A.~A., {M}erzlyak, M.~N., and {C}hivkunova, O.~B. (2001).
+\newblock {O}ptical properties and nondestructive estimation of anthocyanin
+  content in plant leaves.
+\newblock {\em {P}hotochemistry and {P}hotobiology}, 74(1):38--45.
+
+\bibitem[{G}itelson et~al., 2005]{Gitelson2005}
+{G}itelson, A.~A., {V}i{\~{n}}a, A., {C}iganda, V., {R}undquist, D.~C., and
+  {A}rkebauer, T.~J. (2005).
+\newblock {R}emote estimation of canopy chlorophyll content in crops.
+\newblock {\em {G}eophysical {R}esearch {L}etters}, 32(8):1--4.
+
+\bibitem[{G}itelson et~al., 2002b]{Gitelson2002a}
+{G}itelson, A.~A., {Z}ur, Y., {C}hivkunova, O.~B., and {M}erzlyak, M.~N.
+  (2002b).
+\newblock {A}ssessing carotenoid content in plant leaves with reflectance
+  spectroscopy.
+\newblock {\em {P}hotochemistry and {P}hotobiology}, 75(3):272--281.
+
+\bibitem[{G}oel and {Q}in, 1994]{Goel1994}
+{G}oel, N.~S. and {Q}in, W. (1994).
+\newblock {I}nfluences of canopy architecture on relationships between various
+  vegetation indices and {LAI} and {FPAR}: {A} computer simulation.
+\newblock {\em {R}emote {S}ensing {R}eviews}, 10(4):309--347.
+
+\bibitem[{G}uyot and {B}aret, 1988]{Guyot1988}
+{G}uyot, G. and {B}aret, F. (1988).
+\newblock {U}tilisation de la haute resolution spectrale pour suivre l'etat des
+  couverts vegetaux.
+\newblock In {\em {S}pectral {S}ignatures of {O}bjects in {R}emote {S}ensing},
+  {A}ussois ({M}odane), {F}rance. {E}uropean {S}pace {A}gency.
+
+\bibitem[{H}aboudane et~al., 2004]{Haboudane2004}
+{H}aboudane, D., {M}iller, J.~R., {P}attey, E., {Z}arco{-T}ejada, P.~J., and
+  {S}trachan, I.~B. (2004).
+\newblock {H}yperspectral vegetation indices and novel algorithms for
+  predicting green {LAI} of crop canopies: {M}odeling and validation in the
+  context of precision agriculture.
+\newblock {\em {R}emote {S}ensing of {E}nvironment}, 90(3):337--352.
+
+\bibitem[{H}aboudane et~al., 2002]{Haboudane2002}
+{H}aboudane, D., {M}iller, J.~R., {T}remblay, N., {Z}arco{-T}ejada, P.~J., and
+  {D}extraze, L. (2002).
+\newblock {I}ntegrated narrow{-}band vegetation indices for prediction of crop
+  chlorophyll content for application to precision agriculture.
+\newblock {\em {R}emote {S}ensing of {E}nvironment}, 81(2-3):416--426.
+
+\bibitem[{H}aboudane et~al., 2008]{Haboudane2008}
+{H}aboudane, D., {T}remblay, N., {M}iller, J.~R., and {V}igneault, P. (2008).
+\newblock {R}emote estimation of crop chlorophyll content using spectral
+  indices derived from hyperspectral data.
+\newblock {\em {IEEE} {T}ransactions on {G}eoscience and {R}emote {S}ensing},
+  46(2):423--436.
+
+\bibitem[{H}e et~al., 2016]{He2016}
+{H}e, L., {S}ong, X., {F}eng, W., {G}uo, B., {Z}hang, Y., {W}ang, Y., {W}ang,
+  C., and {G}uo, T. (2016).
+\newblock {I}mproved remote sensing of leaf nitrogen concentration in winter
+  wheat using multi{-}angular hyperspectral data.
+\newblock {\em {R}emote {S}ensing of {E}nvironment}, 174:122--133.
+
+\bibitem[{H}orler et~al., 1983]{Horler1983}
+{H}orler, D. N.~H., {D}ockray, M., and {B}arber, J. (1983).
+\newblock {T}he red edge of plant leaf reflectance.
+\newblock {\em {I}nternational {J}ournal of {R}emote {S}ensing}, 4(2):273--288.
+
+\bibitem[{H}uang et~al., 2004]{Huang2004}
+{H}uang, Z., {T}urner, B.~J., {D}ury, S.~J., {W}allis, I.~R., and {F}oley,
+  W.~J. (2004).
+\newblock {E}stimating foliage nitrogen concentration from {HYMAP} data using
+  continuum removal analysis.
+\newblock {\em {R}emote {S}ensing of {E}nvironment}, 93(1-2):18--29.
+
+\bibitem[{H}uete et~al., 2002]{Huete2002}
+{H}uete, A., {D}idan, K., {M}iura, T., {R}odriguez, E.~P., {G}ao, X., and
+  {F}erreira, L.~G. (2002).
+\newblock {O}verview of the radiometric and biophysical performance of the
+  {MODIS} vegetation indices.
+\newblock {\em {R}emote {S}ensing of {E}nvironment}, 83(1-2):195--213.
+
+\bibitem[{H}uete, 1988]{Huete1988}
+{H}uete, A.~R. (1988).
+\newblock {A} soil{-}adjusted vegetation index ({SAVI}).
+\newblock {\em {R}emote {S}ensing of {E}nvironment}, 25:295--309.
+
+\bibitem[{H}uete et~al., 1984]{Huete1984}
+{H}uete, A.~R., {P}ost, D.~F., and {J}ackson, R.~D. (1984).
+\newblock {S}oil spectral effects on 4{-}space vegetation discrimination.
+\newblock {\em {R}emote {S}ensing of {E}nvironment}, 15(2):155--165.
+
+\bibitem[{H}unt and {R}ock, 1989]{Hunt1989}
+{H}unt, {J}r., E.~R. and {R}ock, B.~N. (1989).
+\newblock {D}etection of changes in leaf water content using near{-} and
+  middle{-}infrared reflectances.
+\newblock {\em {R}emote {S}ensing of {E}nvironment}, 30(1):43--54.
+
+\bibitem[{H}unt et~al., 2011]{Hunt2011}
+{H}unt, {J}r., R.~E., {D}aughtry, C. S.~T., {E}itel, J. U.~H., and {L}ong,
+  D.~S. (2011).
+\newblock {R}emote sensing leaf chlorophyll content using a visible band index.
+\newblock {\em {A}gronomy {J}ournal}, 103(4):1090--1099.
+
+\bibitem[{J}ackson et~al., 1980]{Jackson1980}
+{J}ackson, R.~D., {P}inter, {J}r., P.~J., {R}eginato, R.~J., and {I}dso, S.~B.
+  (1980).
+\newblock {H}and{-H}eld {R}adiometry.
+\newblock Technical report, U.S. Department of Agriculture.
+
+\bibitem[{J}iang et~al., 2008]{Jiang2008}
+{J}iang, Z., {H}uete, A.~R., {D}idan, K., and {M}iura, T. (2008).
+\newblock {D}evelopment of a two{-}band enhanced vegetation index without a
+  blue band.
+\newblock {\em {R}emote {S}ensing of {E}nvironment}, 112(10):3833--3845.
+
+\bibitem[{J}ordan, 1969]{Jordan1969}
+{J}ordan, C.~F. (1969).
+\newblock {D}erivation of leaf area index from quality of light on the forest
+  floor.
+\newblock {\em {E}cology}, 50(4):663--666.
+
+\bibitem[{K}im et~al., 1994]{Kim1994}
+{K}im, M.~S., {D}aughtry, C. S.~T., {C}happelle, E.~W., {M}c{M}urtrey, J.~E.,
+  and {W}althall, C.~L. (1994).
+\newblock {T}he use of high spectral resolution bands for estimating absorbed
+  photosynthetically active radiation ({A}par).
+\newblock In {\em {P}roceedings of the {S}ixth {S}ymposium on {P}hysical
+  {M}easurements and {S}ignatures in {R}emote {S}ensing}, pages 299--306, Val
+  D'lsere, France.
+\newblock 17--21 January.
+
+\bibitem[{K}okaly and {C}lark, 1999]{Kokaly1999}
+{K}okaly, R.~F. and {C}lark, R.~N. (1999).
+\newblock {S}pectroscopic determination of leaf biochemistry using band{-}depth
+  analysis of absorption features and stepwise multiple linear regression.
+\newblock {\em {R}emote {S}ensing of {E}nvironment}, 67(3):267--287.
+
+\bibitem[{L}e {M}aire et~al., 2004]{LeMaire2004}
+{L}e {M}aire, G., {F}ran{\c{c}}ois, C., and {D}ufr{\^{e}}ne, E. (2004).
+\newblock {T}owards universal broad leaf chlorophyll indices using {PROSPECT}
+  simulated database and hyperspectral reflectance measurements.
+\newblock {\em {R}emote {S}ensing of {E}nvironment}, 89(1):1--28.
+
+\bibitem[Le~Maire et~al., 2008]{LeMaire2008}
+Le~Maire, G., Fran{\c{c}}ois, C., Soudani, K., Berveiller, D., Pontailler,
+  J.-Y., Br{\'{e}}da, N., Genet, H., Davi, H., and Dufr{\^{e}}ne, E. (2008).
+\newblock {C}alibration and validation of hyperspectral indices for the
+  estimation of broadleaved forest leaf chlorophyll content, leaf mass per
+  area, leaf area index and leaf canopy biomass.
+\newblock {\em {R}emote {S}ensing of {E}nvironment}, 112(10):3846--3864.
+
+\bibitem[{L}ichtenthaler et~al., 1996]{Lichtenthaler1996}
+{L}ichtenthaler, H.~K., {G}itelson, A., and {L}ang, M. (1996).
+\newblock {N}on{-}destructive determination of chlorophyll content of leaves of
+  a green and an aurea mutant of tobacco by reflectance measurements.
+\newblock {\em {J}ournal of {P}lant {P}hysiology}, 148(3--4):483--493.
+
+\bibitem[{M}accioni et~al., 2001]{Maccioni2001}
+{M}accioni, A., {A}gati, G., and {M}azzinghi, P. (2001).
+\newblock {N}ew vegetation indices for remote measurement of chlorophylls based
+  on leaf directional reflectance spectra.
+\newblock {\em {J}ournal of {P}hotochemistry and {P}hotobiology {B}:
+  {B}iology}, 61(1--2):52--61.
+
+\bibitem[{M}ajor et~al., 1990]{Major1990}
+{M}ajor, D.~J., {B}aret, F., and {G}uyot, G. (1990).
+\newblock {A} ratio vegetation index adjusted for soil brightness.
+\newblock {\em {I}nternational {J}ournal of {R}emote {S}ensing},
+  11(5):727--740.
+
+\bibitem[{M}erzlyak et~al., 1999]{Merzlyak1999}
+{M}erzlyak, M.~N., {G}itelson, A.~A., {C}hivkunova, O.~B., and {R}akitin, V.~Y.
+  (1999).
+\newblock {N}on{-}destructive optical detection of pigment changes during leaf
+  senescence and fruit ripening.
+\newblock {\em {P}hysiologia {P}lantarum}, 106(1):135--141.
+
+\bibitem[{M}iller et~al., 1990]{Miller1990}
+{M}iller, J.~R., {H}are, E.~W., and {W}u, J. (1990).
+\newblock {Q}uantitative characterization of the vegetation red edge
+  reflectance 1. {A}n inverted{-G}aussian reflectance model.
+\newblock {\em {I}nternational {J}ournal of {R}emote {S}ensing},
+  11(10):1755--1773.
+
+\bibitem[{O}ppelt and {M}auser, 2001]{Oppelt2001}
+{O}ppelt, N. and {M}auser, W. (2001).
+\newblock The chlorophyll content of maize (zea mays) derived with the
+  {A}irborne {I}maging {S}pectrometer {AVIS}.
+\newblock In {\em {P}roceedings of the 8th {I}nternational {S}ymposium on
+  {P}hysical {M}easurements and {S}ignatures in {R}emote {S}ensing}, pages
+  407--412, Aussois, France.
+
+\bibitem[{O}ppelt and {M}auser, 2004]{Oppelt2004}
+{O}ppelt, N. and {M}auser, W. (2004).
+\newblock {H}yperspectral monitoring of physiological parameters of wheat
+  during a vegetation period using {AVIS} data.
+\newblock {\em {I}nternational {J}ournal of {R}emote {S}ensing},
+  25(1):145--159.
+
+\bibitem[{P}eng and {G}itelson, 2011]{Peng2011}
+{P}eng, Y. and {G}itelson, A.~A. (2011).
+\newblock {A}pplication of chlorophyll{-}related vegetation indices for remote
+  estimation of maize productivity.
+\newblock {\em {A}gricultural and {F}orest {M}eteorology}, 151(9):1267--1276.
+
+\bibitem[Pe{\~{n}}uelas et~al., 1995a]{Penuelas1995a}
+Pe{\~{n}}uelas, J., Baret, F., and Filella, I. (1995a).
+\newblock {S}emi{-}empirical indices to assess carotenoids/chlorophyll{-}a
+  ratio from leaf spectral reflectance.
+\newblock {\em {P}hotosynthetica}, 31(2):221--230.
+
+\bibitem[{P}e{\~{n}}uelas et~al., 1993]{Penuelas1993}
+{P}e{\~{n}}uelas, J., {F}ilella, I., {B}iel, C., {S}errano, L., and
+  {S}av{\'{e}}, R. (1993).
+\newblock {T}he reflectance at the 950{-}970 nm region as an indicator of plant
+  water status.
+\newblock {\em {I}nternational {J}ournal of {R}emote {S}ensing},
+  14(10):1887--1905.
+
+\bibitem[Pe{\~{n}}uelas et~al., 1995b]{Penuelas1995b}
+Pe{\~{n}}uelas, J., Filella, I., Lloret, P., Mu{\~{n}}oz, F., and Vilajeliu, M.
+  (1995b).
+\newblock {R}eflectance assessment of mite effects on apple trees.
+\newblock {\em {I}nternational {J}ournal of {R}emote {S}ensing},
+  16(14):2727--2733.
+
+\bibitem[Pe{\~{n}}uelas et~al., 1994]{Penuelas1994}
+Pe{\~{n}}uelas, J., Gamon, J.~A., Fredeen, A.~L., Merino, J., and Field, C.~B.
+  (1994).
+\newblock {R}eflectance indices associated with physiological changes in
+  nitrogen{-} and water{-}limited sunflower leaves.
+\newblock {\em {R}emote {S}ensing of {E}nvironment}, 48(2):135--146.
+
+\bibitem[Pe{\~{n}}uelas et~al., 1997]{Penuelas1997}
+Pe{\~{n}}uelas, J., Pinol, J., Ogaya, R., and Filella, I. (1997).
+\newblock {E}stimation of plant water concentration by the reflectance {W}ater
+  {I}ndex {WI} ({R}900/{R}970).
+\newblock {\em {I}nternational {J}ournal of {R}emote {S}ensing},
+  18(13):2869--2875.
+
+\bibitem[{P}inty and {V}erstraete, 1992]{Pinty1992}
+{P}inty, B. and {V}erstraete, M.~M. (1992).
+\newblock {GEMI}: a non{-}linear index to monitor global vegetation from
+  satellites.
+\newblock {\em {V}egetatio}, 101(1):15--20.
+
+\bibitem[{Q}i et~al., 1994]{Qi1994}
+{Q}i, J., {C}hehbouni, A., {H}uete, A.~R., {K}err, Y.~H., and {S}orooshian, S.
+  (1994).
+\newblock {A} modified soil adjusted vegetation index.
+\newblock {\em {R}emote {S}ensing of {E}nvironment}, 24:119--126.
+
+\bibitem[{R}eyniers et~al., 2006]{Reyniers2006}
+{R}eyniers, M., {W}alvoort, D. J.~J., and {D}e {B}aardemaaker, J. (2006).
+\newblock {A} linear model to predict with a multi{-}spectral radiometer the
+  amount of nitrogen in winter wheat.
+\newblock {\em {I}nternational {J}ournal of {R}emote {S}ensing},
+  27(19):4159--4179.
+
+\bibitem[{R}ichardson and {W}iegand, 1977]{Richardson1977}
+{R}ichardson, A.~J. and {W}iegand, C.~L. (1977).
+\newblock {D}istinguishing vegetation from soil background information.
+\newblock {\em {P}hotogrammetric {E}ngineering \& {R}emote {S}ensing},
+  43(12):1541--1552.
+
+\bibitem[{R}ondeaux et~al., 1996]{Rondeaux1996}
+{R}ondeaux, G., {S}teven, M., and {B}aret, F. (1996).
+\newblock {O}ptimization of soil{-}adjusted vegetation indices.
+\newblock {\em {R}emote {S}ensing of {E}nvironment}, 55:95--107.
+
+\bibitem[{R}oujean and {B}reon, 1995]{Roujean1995}
+{R}oujean, J. and {B}reon, F. (1995).
+\newblock {E}stimating {PAR} absorbed by vegetation from bidirectional
+  reflectance measurements.
+\newblock {\em {R}emote {S}ensing of {E}nvironment}, 51(3):375--384.
+
+\bibitem[{R}ouse et~al., 1973]{Rouse1973}
+{R}ouse, {J}r., J.~W., {H}aas, R.~H., {S}chell, J.~A., and {D}eering, D.~W.
+  (1973).
+\newblock {M}onitoring the vernal advancement and retrogradation (green wave
+  effect) of natural vegetation, {P}rogram {R}eport {RSC} 1978{-}1.
+\newblock Technical report, Remote Sensing Center, Texas A\&M University,
+  College Station, 93p. (NTIS no. E73-10693).
+
+\bibitem[Serrano et~al., 2002]{Serrano2002}
+Serrano, L., Pe{\~{n}}uelas, J., and Ustin, S.~L. (2002).
+\newblock {R}emote sensing of nitrogen and lignin in {M}editerranean vegetation
+  from {AVIRIS} data: {D}ecomposing biochemical from structural signals.
+\newblock {\em {R}emote {S}ensing of {E}nvironment}, 81(2--3):355--364.
+
+\bibitem[{S}ims and {G}amon, 2002]{Sims2002}
+{S}ims, D.~A. and {G}amon, J.~A. (2002).
+\newblock {R}elationships between leaf pigment content and spectral reflectance
+  across a wide range of species, leaf structures and developmental stages.
+\newblock {\em {R}emote {S}ensing of {E}nvironment}, 81(2--3):337--354.
+
+\bibitem[{S}onobe and {W}ang, 2017]{Sonobe2017}
+{S}onobe, R. and {W}ang, Q. (2017).
+\newblock {T}owards a universal hyperspectral index to assess chlorophyll
+  content in deciduous forests.
+\newblock {\em {R}emote {S}ensing}, 9:191.
+
+\bibitem[{T}ucker, 1979]{Tucker1979}
+{T}ucker, C.~J. (1979).
+\newblock {R}ed and photographic infrared linear combinations for monitoring
+  vegetation.
+\newblock {\em {R}emote {S}ensing of {E}nvironment}, 8:127--150.
+
+\bibitem[{V}incini et~al., 2006]{Vincini2006}
+{V}incini, M., {F}razzi, E., and {D}'{A}lessio, P. (2006).
+\newblock {A}ngular dependence of maize and sugar beet {VI}s from directional
+  {CHRIS}/{P}roba data.
+\newblock In {\em {P}roceedings of the 4th {ESA} {CHRIS} {PROBA} {W}orkshop}.
+
+\bibitem[{V}incini et~al., 2008]{Vincini2008}
+{V}incini, M., {F}razzi, E., and {D}'{A}lessio, P. (2008).
+\newblock {A} broad{-}band leaf chlorophyll vegetation index at the canopy
+  scale.
+\newblock {\em {P}recision {A}griculture}, 9(5):303--319.
+
+\bibitem[Virtanen et~al., 2020]{Virtanen2020}
+Virtanen, P., Gommers, R., Oliphant, T.~E., Haberland, M., Reddy, T.,
+  Cournapeau, D., Burovski, E., Peterson, P., Weckesser, W., Bright, J.,
+  {V}an~der Walt, S.~J., Brett, M., Wilson, J., Millman, K.~J., Mayorov, N.,
+  Nelson, A. R.~J., Jones, E., Kern, R., Larson, E., Carey, C.~J., Polat,
+  {\.{I}}., Feng, Y., Moore, E.~W., VanderPlas, J., Laxalde, D., Perktold, J.,
+  Cimrman, R., Henriksen, I., Quintero, E.~A., Harris, C.~R., Archibald, A.~M.,
+  Ribeiro, A.~H., Pedregosa, F., {V}an Mulbregt, P., Vijaykumar, A., Bardelli,
+  A.~P., Rothberg, A., Hilboll, A., Kloeckner, A., Scopatz, A., Lee, A., Rokem,
+  A., Woods, C.~N., Fulton, C., Masson, C., H{\"{a}}ggstr{\"{o}}m, C.,
+  Fitzgerald, C., Nicholson, D.~A., Hagen, D.~R., Pasechnik, D.~V., Olivetti,
+  E., Martin, E., Wieser, E., Silva, F., Lenders, F., Wilhelm, F., Young, G.,
+  Price, G.~A., Ingold, G.-L., Allen, G.~E., Lee, G.~R., Audren, H., Probst,
+  I., Dietrich, J.~P., Silterra, J., Webber, J.~T., Slavi{\v{c}}, J., Nothman,
+  J., Buchner, J., Kulick, J., Sch{\"{o}}nberger, J.~L., de~Miranda~Cardoso,
+  J.~V., Reimer, J., Harrington, J., Rodr{\'{i}}guez, J. L.~C., Nunez-Iglesias,
+  J., Kuczynski, J., Tritz, K., Thoma, M., Newville, M., K{\"{u}}mmerer, M.,
+  Bolingbroke, M., Tartre, M., Pak, M., Smith, N.~J., Nowaczyk, N., Shebanov,
+  N., Pavlyk, O., Brodtkorb, P.~A., Lee, P., McGibbon, R.~T., Feldbauer, R.,
+  Lewis, S., Tygier, S., Sievert, S., Vigna, S., Peterson, S., More, S.,
+  Pudlik, T., Oshima, T., Pingel, T.~J., Robitaille, T.~P., Spura, T., Jones,
+  T.~R., Cera, T., Leslie, T., Zito, T., Krauss, T., Upadhyay, U., Halchenko,
+  Y.~O., V{\'{a}}zquez-Baeza, Y., and Contributors, S.~. (2020).
+\newblock {S}ci{P}y 1.0: fundamental algorithms for scientific computing in
+  {P}ython.
+\newblock {\em {N}ature {M}ethods}, 17(3):261--272.
+
+\bibitem[{V}ogelmann et~al., 1993]{Vogelmann1993}
+{V}ogelmann, J.~E., {R}ock, B.~N., and {M}oss, D.~M. (1993).
+\newblock {R}ed edge spectral measurements from sugar maple leaves.
+\newblock {\em {I}nternational {J}ournal of {R}emote {S}ensing},
+  14(8):1563--1575.
+
+\bibitem[{W}u et~al., 2008]{Wu2008}
+{W}u, C., {N}iu, Z., {T}ang, Q., and {H}uang, W. (2008).
+\newblock {E}stimating chlorophyll content from hyperspectral vegetation
+  indices: {M}odeling and validation.
+\newblock {\em {A}gricultural and {F}orest {M}eteorology}, 148(8-9):1230--1241.
+
+\bibitem[{Y}oder and {P}ettigrew{-C}rosby, 1995]{Yoder1995}
+{Y}oder, B.~J. and {P}ettigrew{-C}rosby, R.~E. (1995).
+\newblock {P}redicting nitrogen and chlorophyll content and concentrations from
+  reflectance spectra (400{-}2500 nm) at leaf and canopy scales.
+\newblock {\em {R}emote {S}ensing of {E}nvironment}, 53(3):199--211.
+
+\bibitem[Zarco-Tejada et~al., 2005]{Zarco-Tejada2005}
+Zarco-Tejada, P.~J., Berj{\'{o}}n, A., L{\'{o}}pez-Lozano, R., Miller, J.~R.,
+  Mart{\'{i}}n, P., Cachorro, V., Gonz{\'{a}}lez, M.~R., and De~Frutos, A.
+  (2005).
+\newblock {A}ssessing vineyard condition with hyperspectral indices: {L}eaf and
+  canopy reflectance simulation in a row{-}structured discontinuous canopy.
+\newblock {\em {R}emote {S}ensing of {E}nvironment}, 99(3):271--287.
+
+\bibitem[{Z}arco{-T}ejada et~al., 2000a]{Zarco-Tejada2000a}
+{Z}arco{-T}ejada, P.~J., {M}iller, J.~R., {M}ohammed, G.~H., and {N}oland,
+  T.~L. (2000a).
+\newblock {C}hlorophyll fluorescence effects on vegetation apparent
+  reflectance: {I}. {L}eaf{-}level measurements and model simulation.
+\newblock {\em {R}emote {S}ensing of {E}nvironment}, 74(3):582--595.
+
+\bibitem[{Z}arco{-T}ejada et~al., 2000b]{Zarco-Tejada2000b}
+{Z}arco{-T}ejada, P.~J., {M}iller, J.~R., {M}ohammed, G.~H., {N}oland, T.~L.,
+  and {S}ampson, P.~H. (2000b).
+\newblock {C}hlorophyll fluorescence effects on vegetation apparent
+  reflectance: {II}. {L}aboratory and airborne canopy{-}level measurements with
+  hyperspectral data.
+\newblock {\em {R}emote {S}ensing of {E}nvironment}, 74(3):596--608.
+
+\bibitem[{Z}arco{-T}ejada et~al., 2001a]{Zarco-Tejada2001a}
+{Z}arco{-T}ejada, P.~J., {M}iller, J.~R., {M}ohammed, G.~H., {N}oland, T.~L.,
+  and {S}ampson, P.~H. (2001a).
+\newblock {E}stimation of chlorophyll fluorescence under natural illumination
+  from hyperspectral data.
+\newblock {\em {I}nternational {J}ournal of {A}pplied {E}arth {O}bservation and
+  {G}eoinformation}, 3(4):321--327.
+
+\bibitem[{Z}arco{-T}ejada et~al., 2001b]{Zarco-Tejada2001b}
+{Z}arco{-T}ejada, P.~J., {M}iller, J.~R., {N}oland, T.~L., {M}ohammed, G.~H.,
+  and {S}ampson, P.~H. (2001b).
+\newblock {S}caling{-}up and model inversion methods with narrowband optical
+  indices for chlorophyll content estimation in closed forest canopies with
+  hyperspectral data.
+\newblock {\em {IEEE} {T}ransactions on {G}eoscience and {R}emote {S}ensing},
+  39(7):1491--1507.
+
+\bibitem[{Z}arco{-T}ejada et~al., 2003a]{Zarco-Tejada2003}
+{Z}arco{-T}ejada, P.~J., {P}ushnik, J.~C., {D}obrowski, S., and {U}stin, S.~L.
+  (2003a).
+\newblock {S}teady{-}state chlorophyll a fluorescence detection from canopy
+  derivative reflectance and double{-}peak red{-}edge effects.
+\newblock {\em {R}emote {S}ensing of {E}nvironment}, 84(2):283--294.
+
+\bibitem[{Z}arco{-T}ejada et~al., 2003b]{Zarco-Tejada2003b}
+{Z}arco{-T}ejada, P.~J., {R}ueda, C.~A., and {U}stin, S.~L. (2003b).
+\newblock {W}ater content estimation in vegetation with {MODIS} reflectance
+  data and model inversion methods.
+\newblock {\em {R}emote {S}ensing of {E}nvironment}, 85(1):109--124.
+
+\end{thebibliography}
