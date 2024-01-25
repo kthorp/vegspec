@@ -26,7 +26,7 @@ where required inputs are defined as follows:
 * wl : list, Wavelengths (nm) corresponding to the data in rf
 * rf : list, Reflectance factors (0 to 1) for a single spectral scan
 
-Other optional arguments for the VegSpec constructor are as follows:
+Other optional arguments for the `VegSpec` constructor are as follows:
 
 * fs1 : int, optional, Filter size for Savitsky-Golay first derivatives, (default = 7)
 * po1 : int, optional, Polynomial order for Savitsky-Golay first derivatives, (default = 2)
@@ -36,18 +36,18 @@ Other optional arguments for the VegSpec constructor are as follows:
 * wlgrn : float, optional, Primary wavelength of visible green light (nm), (default = 550.)
 * wlred : float, optional, Primary wavelength of visible red light (nm), (default = 670.)
 * wlnir : float, optional, Primary wavelength of near-infrared light (nm), (default = 800.)
-* solslp : float, optional, Slope of the soil line, (default = 1.166, Huete et al. (1984))
-* solicpt : float, optional, Intercept of the soil line, (default = 0.042, Huete et al. (1984))
+* solslp : float, optional, Slope of the soil line, (default = 1.166)
+* solicpt : float, optional, Intercept of the soil line, (default = 0.042)
 * getlirf : boolean, optional, If True, compute log inverse reflectance, (default = True)
 * getcrrf : boolean, optional, If True, compute continuum removed spectra, (default = True)
 
-The VegSpec class constructor will automatically compute all spectral vegetation indices and spectral data pretreatments unless optional arguments (i.e., `getlirf` and `getcrrf`) are changed to `False`. If increased computation efficiency is needed, consider changing `getcrrf` to `False`.
+The `VegSpec` class constructor will automatically compute all spectral vegetation indices and spectral data pretreatment transformations unless optional arguments (i.e., `getlirf` and `getcrrf`) are changed to `False`. If increased computational efficiency is needed, consider changing `getcrrf` to `False`.
 
 ### Access the results
-...
+```
 for key in spectrum.indices.keys():
     print(key+',{:f}'.format(spectrum.indices[key]))
-...
+```
 
 `print(spectrum.rfd1)`
 
