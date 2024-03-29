@@ -201,6 +201,7 @@ class VegSpec:
         self.indices.update({'GNDVI':  self._GNDVI()  })
         self.indices.update({'OSAVI':  self._OSAVI()  })
         self.indices.update({'WI':     self._WI()     })
+        self.indices.update({'WNR':    self._WNR()    })
         self.indices.update({'PSSRA':  self._PSSRA()  })
         self.indices.update({'PSSRB':  self._PSSRB()  })
         self.indices.update({'PSSRC':  self._PSSRC()  })
@@ -845,6 +846,12 @@ class VegSpec:
         R900 = np.interp(900.,self.wl,self.rf,self.NaN,self.NaN)
         R970 = np.interp(970.,self.wl,self.rf,self.NaN,self.NaN)
         return R900/R970
+
+    def _WNR(self):
+        """Compute the WI NDVI ratio (Penuelas et al., 1997)"""
+        WI = self._WI()
+        NDVI = self._NDVI()
+        return WI/NDVI
 
     def _PSSRA(self):
         """Compute the Pigment Specific Simple Ratio for chlA (PSSRA)

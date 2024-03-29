@@ -2,6 +2,8 @@ LICENSE.md
 README.md
 pyproject.toml
 setup.cfg
+src/vegspec/__init__.py
+src/vegspec/vegspec.py
 src/vegspec.egg-info/PKG-INFO
 src/vegspec.egg-info/SOURCES.txt
 src/vegspec.egg-info/dependency_links.txt
