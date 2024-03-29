@@ -1507,6 +1507,6 @@ class VegSpec:
 
     def _GRSUM(self):
         """Compute the area of the green reflectance peak from 500 nm
-        to 600 nm (GRSUM) (Thorp and Thompson)"""
+        to 600 nm (GRSUM) (Thorp and Thompson, in prep)"""
         widx = np.where(np.logical_and(self.wl>=500.,self.wl<=600.))
         return np.sum(self.rf[widx]*self.bndwdth[widx])
