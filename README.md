@@ -62,13 +62,29 @@ The VegSpec class stores the computational results in the following attribute va
 
 For further information on the keys of the `indices` attribute, see the documentation [here](http://github.com/kthorp/vegspec/tree/main/docs/document.pdf).
 
-## Further examples
-Further example scripts for using the vegspec package are [here](https://github.com/kthorp/vegspec/tree/main/tests).
+## Test suite and further examples
+A test suite and further example scripts for using the vegspec package are [here](https://github.com/kthorp/vegspec/tree/main/tests).
+
+[test0](https://github.com/kthorp/vegspec/tree/main/tests/test0) - Demonstrates the computation of spectral transformations for one example spectrum, collected from a cotton leaf at Maricopa, Arizona.
+
+[test1](https://github.com/kthorp/vegspec/tree/main/tests/test1) - Demonstrates computation of spectral vegetation indices for cotton leaf spectra collected at Maricopa, Arizona in 2021 and 2022 and correlates the indices with leaf chlorophyll.
+
+[test2](https://github.com/kthorp/vegspec/tree/main/tests/test2) - Demonstrates computation of spectral vegetation indices for cotton leaf spectra collected at Maricopa, Arizona in 2019 and 2020 and correlates the indices with leaf chlorophyll and leaf nitrogen.
+
+[test3](https://github.com/kthorp/vegspec/tree/main/tests/test3) - Demonstrates computation of spectral vegetation indices for wheat canopy spectra collected at Maricopa, Arizona in 2011 and 2012 and correlates the indices with leaf area index, canopy weight, and plant nitrogen.
+
+[test4](https://github.com/kthorp/vegspec/tree/main/tests/test4) - Demonstrates computation of spectral vegetation indices for cotton canopy spectra collected at Maricopa, Arizona in 2010, 2011, and 2012 and correlates the indices with leaf chlorophyll, leaf water thickness, specific leaf weight, and leaf area index.
+
+[test5](https://github.com/kthorp/vegspec/tree/main/tests/test5) - Demonstrates computation of spectral vegetation indices for lesquerella canopy spectra collected at Maricopa, Arizona in 2008 and 2009 and correlates the indices with canopy weight, flower count, silique count, and silique dry weight.
+
+[test6](https://github.com/kthorp/vegspec/tree/main/tests/test6) - Demonstrates computation of spectral vegetation indices for maize canopy spectra collected at Ames, Iowa in 2004 and correlates the indices with plant stand density.
+
+[test7](https://github.com/kthorp/vegspec/tree/main/tests/test7) - Demonstrates computation of spectral vegetation indices for soybean canopy spectra collected at Urbana, Illinois in 2001 and correlates the indices with vegetation and weed cover.
 
 ## Further information
 The vegspec package is further described in the following article:
 
-Thorp, K. R., 2024. vegspec: A compilation of spectral vegetation indices and transformations in Python. SoftwareX. In prep.
+Thorp, K. R., 2024. vegspec: A compilation of spectral vegetation indices and transformations in Python. SoftwareX. In review.
 
 
 Also, the vegspec package was used to conduct the following research:

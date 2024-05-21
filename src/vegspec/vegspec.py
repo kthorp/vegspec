@@ -8,11 +8,12 @@ removal, and more than 145 published spectral vegetation indices.
 04/06/2022 Initial Python functions developed by Kelly Thorp
 12/02/2022 Finalized code for release in the vegspec Python package
 01/23/2023 Added more spectral vegetation indices
+05/09/2024 Finalized code for first SoftwareX published release
 ########################################################################
 """
 
 import numpy as np
-#import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 from scipy.signal import savgol_filter
 from scipy.spatial import ConvexHull
 from scipy.optimize import curve_fit
@@ -286,7 +287,6 @@ class VegSpec:
         self.indices.update({'WDRVI2': self._WDRVI2() })
         self.indices.update({'AIVI':   self._AIVI()   })
         self.indices.update({'DND':    self._DND()    })
-        self.indices.update({'GRSUM':  self._GRSUM()  })
 
     #Spectral transformations
     def _derivative1(self,fs1,po1):
@@ -369,6 +369,7 @@ class VegSpec:
         """Identify the wavelength (nm) of the red edge inflection point
         (Collins, 1978; Horler et al., 1983)"""
         widx = np.where(np.logical_and(self.wl>=680.,self.wl<=750.))
+        if len(widx[0])==0: return self.NaN
         return self.wl[widx][np.argmax(self.rfd1[widx])]
 
     def _DVI(self):
@@ -437,6 +438,7 @@ class VegSpec:
         (Boochs et al., 1990)"""
         D703 = np.interp(703.,self.wl,self.rfd1,self.NaN,self.NaN)
         widx = np.where(np.logical_and(self.wl>=680.,self.wl<=750.))
+        if len(widx[0])==0: return self.NaN
         Dmax = np.amax(self.rfd1[widx])
         return D703/Dmax
 
@@ -593,12 +595,14 @@ class VegSpec:
         """Compute the Penuelas derivative (PD)
         (Penuelas et al., 1993)"""
         widx = np.where(np.logical_and(self.wl>=900.,self.wl<=970.))
+        if len(widx[0])==0: return self.NaN
         return np.amin(self.rfd1[widx])
 
     def _WLPD(self):
         """Identify the wavelength (nm) of the minimum first derivative
         in the near infrared region (WLPD) (Penuelas et al., 1993)"""
         widx = np.where(np.logical_and(self.wl>=900.,self.wl<=970.))
+        if len(widx[0])==0: return self.NaN
         return self.wl[widx][np.argmin(self.rfd1[widx])]
 
     def _VSR(self):
@@ -650,6 +654,7 @@ class VegSpec:
         680 nm to 780 nm (FSUM) (Filella & Penuelas, 1994;
         Fillela et al., 1995)"""
         widx = np.where(np.logical_and(self.wl>=680.,self.wl<=780.))
+        if len(widx[0])==0: return self.NaN
         return np.sum(self.rfd1[widx]*self.bndwdth[widx])
 
     def _DREIP(self):
@@ -657,6 +662,7 @@ class VegSpec:
         edge inflection point (DREIP) (Filella & Penuelas, 1994;
         Fillela et al., 1995)"""
         widx = np.where(np.logical_and(self.wl>=680.,self.wl<=780.))
+        if len(widx[0])==0: return self.NaN
         return np.amax(self.rfd1[widx])
 
     def _NDVI3(self):
@@ -672,6 +678,7 @@ class VegSpec:
         (Gitelson & Merzlyak, 1994)"""
         R705 = np.interp(705.,self.wl,self.rf,self.NaN,self.NaN)
         widx = np.where(np.logical_and(self.wl>=705.,self.wl<=750.))
+        if len(widx[0])==0: return self.NaN
         return np.sum((self.rf[widx]/R705-1.)*self.bndwdth[widx])
 
     def _GSUM2(self):
@@ -680,6 +687,7 @@ class VegSpec:
         (Gitelson & Merzlyak, 1994)"""
         R555 = np.interp(555.,self.wl,self.rf,self.NaN,self.NaN)
         widx = np.where(np.logical_and(self.wl>=705.,self.wl<=750.))
+        if len(widx[0])==0: return self.NaN
         return np.sum((self.rf[widx]/R555-1.)*self.bndwdth[widx])
 
     def _NLI(self):
@@ -720,8 +728,10 @@ class VegSpec:
         """Compute the Edge-Green First-derivative Normalized Difference
         Index (EGFN) (Penuelas et al., 1994)"""
         widx = np.where(np.logical_and(self.wl>=500.,self.wl<=600.))
+        if len(widx[0])==0: return self.NaN
         dG = np.amax(self.rfd1[widx])
         widx = np.where(np.logical_and(self.wl>=680.,self.wl<=750.))
+        if len(widx[0])==0: return self.NaN
         dRE = np.amax(self.rfd1[widx])
         return (dRE-dG)/(dRE+dG)
 
@@ -749,12 +759,14 @@ class VegSpec:
         """Compute the area of the first derivative red edge peak from
         626 nm to 795 nm (ESUM1) (Elvidge & Chen, 1995)"""
         widx = np.where(np.logical_and(self.wl>=626.,self.wl<=795.))
+        if len(widx[0])==0: return self.NaN
         return np.sum(np.absolute(self.rfd1[widx])*self.bndwdth[widx])
 
     def _ESUM2(self):
         """Compute the area of the second derivative red edge peaks from
         626 nm to 795 nm (ESUM2) (Elvidge & Chen, 1995)"""
         widx = np.where(np.logical_and(self.wl>=626.,self.wl<=795.))
+        if len(widx[0])==0: return self.NaN
         return np.sum(np.absolute(self.rfd2[widx])*self.bndwdth[widx])
 
     def _NDPI(self):
@@ -1026,6 +1038,7 @@ class VegSpec:
         R542 = np.interp(542.,self.wl,self.rf,self.NaN,self.NaN)
         R750 = np.interp(750.,self.wl,self.rf,self.NaN,self.NaN)
         widx = np.where(np.logical_and(self.wl>=660.,self.wl<=680.))
+        if len(widx[0])==0: return self.NaN
         Rredmin = np.amin(self.rf[widx])
         return (R542-Rredmin)/(R750-Rredmin)
 
@@ -1035,6 +1048,7 @@ class VegSpec:
         R706 = np.interp(706.,self.wl,self.rf,self.NaN,self.NaN)
         R750 = np.interp(750.,self.wl,self.rf,self.NaN,self.NaN)
         widx = np.where(np.logical_and(self.wl>=660.,self.wl<=680.))
+        if len(widx[0])==0: return self.NaN
         Rredmin = np.amin(self.rf[widx])
         return (R706-Rredmin)/(R750-Rredmin)
 
@@ -1044,6 +1058,7 @@ class VegSpec:
         R556 = np.interp(556.,self.wl,self.rf,self.NaN,self.NaN)
         R750 = np.interp(750.,self.wl,self.rf,self.NaN,self.NaN)
         widx = np.where(np.logical_and(self.wl>=660.,self.wl<=680.))
+        if len(widx[0])==0: return self.NaN
         Rredmin = np.amin(self.rf[widx])
         return (R556-Rredmin)/(R750-Rredmin)
 
@@ -1051,6 +1066,7 @@ class VegSpec:
         """Compute the Chlorophyll Absorption Integral (CAINT)
         (Oppelt & Mauser, 2001)"""
         widx = np.where(np.logical_and(self.wl>=600.,self.wl<=735.))
+        if len(widx[0])==0: return self.NaN
         R600 = np.interp(600.,self.wl,self.rf,self.NaN,self.NaN)*100.
         R735 = np.interp(735.,self.wl,self.rf,self.NaN,self.NaN)*100.
         x = [600.,735.]
@@ -1064,6 +1080,7 @@ class VegSpec:
         """Compute the area of the first derivative peak from 680 nm to
         760 nm (ZTSUM) (Zarco-Tejada et al., 2001b)"""
         widx = np.where(np.logical_and(self.wl>=680.,self.wl<=760.))
+        if len(widx[0])==0: return self.NaN
         return np.sum(self.rfd1[widx]*self.bndwdth[widx])
 
     def _PRI3(self):
@@ -1504,9 +1521,3 @@ class VegSpec:
         D522 = np.interp(522.,self.wl,self.rfd1,self.NaN,self.NaN)
         D728 = np.interp(728.,self.wl,self.rfd1,self.NaN,self.NaN)
         return (D522-D728)/(D522+D728)
-
-    def _GRSUM(self):
-        """Compute the area of the green reflectance peak from 500 nm
-        to 600 nm (GRSUM) (Thorp and Thompson, in prep)"""
-        widx = np.where(np.logical_and(self.wl>=500.,self.wl<=600.))
-        return np.sum(self.rf[widx]*self.bndwdth[widx])

@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: vegspec
-Version: 1.0.1
+Version: 1.0.2
 Summary: A compilation of vegetative spectral indices and transformations in Python
 Home-page: http://github.com/kthorp/vegspec
 Author: Dr. Kelly R. Thorp
