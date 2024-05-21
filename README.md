@@ -8,7 +8,7 @@ Scientific background material for the methods implemented in the vegspec packag
 ## Source Code
 The spectral methodologies are contained in one Python module (i.e., [vegspec.py](http://github.com/kthorp/vegspec/tree/main/src/vegspec/vegspec.py)). The module defines a class (i.e., `VegSpec`) to encapsulate all the computations for one vegetative reflectance spectrum. To analyze sets of multiple spectral measurements, users can develop a list of unique `VegSpec` instances for each measurement. At minimum, each `VegSpec` instance requires inputting two 1-dimensional lists that specify the spectral reflecance factors and associated wavelengths.
 
-The source code is available [here](http://github.com/kthorp/vegspec/tree/main/src/).
+The source code is available [here](http://github.com/kthorp/vegspec/tree/main/src/vegspec/vegspec.py).
 
 ## Install
 `pip install vegspec`
@@ -54,7 +54,7 @@ for key in spectrum.indices.keys():
 The VegSpec class stores the computational results in the following attribute variables:
 * rfd1 : numpy.ndarray, A 1D array of the Savitsky-Golay first derivative of rf
 * rfd2 : numpy.ndarray, A 1D array of the Savitsky-Golay second derivative of rf
-* lirf : numpy.ndarray, A 1D array of the logarithm of inverse rf (log10(1/R))
+* lirf : numpy.ndarray, A 1D array of the logarithm of inverse rf (log10(1/rf))
 * lirfd1 : numpy.ndarray, A 1D array of the Savitsky-Golay first derivative of lirf
 * lirfd2 : numpy.ndarry, A 1D array of the Savitsky-Golay second derivative of lirf
 * crrf : numpy.ndarray, A 1D array of the continuum removal of rf
