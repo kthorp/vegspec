@@ -6,7 +6,7 @@ The goal of the vegspec package is to encapsulate computations of 1) more than 1
 Scientific background material for the methods implemented in the vegspec package is given [here](http://github.com/kthorp/vegspec/tree/main/docs/document.pdf).
 
 ## Source Code
-The spectral methodologies are contained in one Python module (i.e., [vegspec.py](http://github.com/kthorp/vegspec/tree/main/src/vegspec.py)). The module defines a class (i.e., `VegSpec`) to encapsulate all the computations for one vegetative reflectance spectrum. To analyze sets of multiple spectral measurements, users can develop a list of unique `VegSpec` instances for each measurement. At minimum, each `VegSpec` instance requires inputting two 1-dimensional lists that specify the spectral reflecance factors and associated wavelengths.
+The spectral methodologies are contained in one Python module (i.e., [vegspec.py](http://github.com/kthorp/vegspec/tree/main/src/vegspec/vegspec.py)). The module defines a class (i.e., `VegSpec`) to encapsulate all the computations for one vegetative reflectance spectrum. To analyze sets of multiple spectral measurements, users can develop a list of unique `VegSpec` instances for each measurement. At minimum, each `VegSpec` instance requires inputting two 1-dimensional lists that specify the spectral reflecance factors and associated wavelengths.
 
 The source code is available [here](http://github.com/kthorp/vegspec/tree/main/src/).
 
