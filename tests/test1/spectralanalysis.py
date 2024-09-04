@@ -12,11 +12,15 @@ print(data.iloc[0].values[-2151:])
 
 wvln = list(range(350,2501))
 spec = []
+durations = []
 
 #Load spectra and compute all transformations and indices
 for i in list(range(data.shape[0])):
     spec.append(vs.VegSpec(wvln,data.iloc[i].values[-2151:]))
-    print(i)
+    durations.append(spec[-1].duration)
+    print(i, spec[-1].duration)
+meandur = np.mean(np.array(durations))
+print('Average compute time = {:5.3f} per scan'.format(meandur))
 
 #Analyze vegetation indices
 fout = open('spectralanalysis.csv','w')

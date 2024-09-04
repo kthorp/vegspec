@@ -1,10 +1,11 @@
 """
 ########################################################################
-The test1.py module contains a function to analyze the vegetative
+The test0.py module contains a function to analyze the vegetative
 reflectance spectrum in sample_spectrum.csv.
 
-The test1.py module contains the following:
-    run - function to run vegspec for a sample cotton leaf spectrum, collected in a field study at Maricopa, Arizona
+The test0.py module contains the following:
+    run - function to run vegspec for a sample cotton leaf spectrum,
+          collected in a field study at Maricopa, Arizona
 
 01/24/2024 Script developed for running vegspec for sample_spectrum.csv
 ########################################################################

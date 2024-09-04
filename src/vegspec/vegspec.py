@@ -18,6 +18,7 @@ from scipy.signal import savgol_filter
 from scipy.spatial import ConvexHull
 from scipy.optimize import curve_fit
 import math
+import time
 
 class VegSpec:
     """A class for analyzing vegetative spectral reflectance data.
@@ -62,6 +63,8 @@ class VegSpec:
         A 1D array of the continuum removal of rf
     indices : dict
         A dictionary of 145+ published spectral vegetation indices
+    duration : float
+        Wall-clock time (seconds) required for computation
     """
 
     def __init__(self,wl,rf,fs1=7,po1=2,fs2=15,po2=2,
@@ -114,6 +117,7 @@ class VegSpec:
             (default = True)
         """
 
+        start = time.time()
         if len(wl) != len(rf):
             raise ValueError('Input lists must have same length.')
         else:
@@ -294,6 +298,8 @@ class VegSpec:
         self.indices.update({'WDRVI2': self._WDRVI2() })
         self.indices.update({'AIVI':   self._AIVI()   })
         self.indices.update({'DND':    self._DND()    })
+        end = time.time()
+        self.duration = end - start
 
     #Spectral transformations
     def _derivative1(self,fs1,po1):
