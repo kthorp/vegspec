@@ -123,8 +123,8 @@ class VegSpec:
         else:
             self.wl = np.array(wl).astype(float)
             self.rf = np.array(rf).astype(float)
-        if min(self.wl)<350. or max(self.wl)>2500.:
-            raise ValueError('wl data must range from 350 to 2500 nm.')
+        if min(self.wl)<250. or max(self.wl)>2500.:
+            raise ValueError('wl data must range from 250 to 2500 nm.')
         if min(self.rf)<0. or max(self.rf)>1.:
             raise ValueError('rf data must range from 0 to 1.')
         bndwdth = []
