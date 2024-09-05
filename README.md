@@ -89,4 +89,4 @@ Thorp, K. R., 2024. vegspec: A compilation of spectral vegetation indices and tr
 
 Also, the vegspec package was used to conduct the following research:
 
-Thorp, K. R., Thompson, A.L., 2024. Phenotyping cotton leaf chlorophyll via proximal hyperspectral reflectance sensing, spectral vegetation indices, and machine learning. Frontiers in Plant Science. In prep.
+Thorp, K. R., Thompson, A. L., Herritt, M. T., 2024. Phenotyping cotton leaf chlorophyll via proximal hyperspectral reflectance sensing, spectral vegetation indices, and machine learning. Frontiers in Plant Science. In prep.
