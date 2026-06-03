@@ -84,9 +84,9 @@ A test suite and further example scripts for using the vegspec package are [here
 ## Further information
 The vegspec package is further described in the following article:
 
-Thorp, K. R., 2024. vegspec: A compilation of spectral vegetation indices and transformations in Python. SoftwareX. In review.
+Thorp, K. R., 2024. vegspec: A compilation of spectral vegetation indices and transformations in Python. SoftwareX 28, 101928. [doi:10.1016/j.softx.2024.101928](https://doi.org/10.1016/j.softx.2024.101928).
 
 
 Also, the vegspec package was used to conduct the following research:
 
-Thorp, K. R., Thompson, A. L., Herritt, M. T., 2024. Phenotyping cotton leaf chlorophyll via proximal hyperspectral reflectance sensing, spectral vegetation indices, and machine learning. Frontiers in Plant Science. In prep.
+Thorp, K. R., Thompson, A. L., Herritt, M. T., 2024. Phenotyping cotton leaf chlorophyll via *in-situ* hyperspectral reflectance sensing, spectral vegetation indices, and machine learning. Frontiers in Plant Science 15, 1495593. [doi:10.3389/fpls.2024.1495593](https://doi.org/10.3389/fpls.2024.1495593).
